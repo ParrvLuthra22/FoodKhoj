@@ -1,6 +1,5 @@
 import React from 'react';
 import { MapPin, Clock, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 function HeroSection() {
   return (
