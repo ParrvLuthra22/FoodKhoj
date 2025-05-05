@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Navbar from './components/common/Navbar'
+import Navbar from './Components/Common/NavBar'
 import Footer from './components/common/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -8,7 +8,7 @@ import Services from './pages/Services'
 import Blog from './pages/Blog'
 import OrderTracking from './pages/OrderTracking'
 import ScrollToTop from './utils/ScrollToTop'
-import { OrderProvider } from './context/OrderContext'
+import { OrderProvider } from './Context/orderContext'
 import './App.css'
 
 function App() {
