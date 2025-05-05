@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Navbar from './Components/Common/NavBar.jsx';
-import Footer from './Components/Common/Footer.jsx'
+import Navbar from './components/common/NavBar.jsx';
+import Footer from './components/common/Footer.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Services from './pages/Services.jsx'
