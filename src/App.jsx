@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import Navbar from './components/common/NavBar'
-import Footer from './components/common/Footer'
-import Home from './pages/Home'
-import About from './pages/About'
-import Services from './pages/Services'
-import Blog from './pages/Blog'
-import OrderTracking from './pages/OrderTracking'
-import ScrollToTop from './utils/ScrollToTop'
-import { OrderProvider } from './Context/orderContext'
+import Navbar from './Components/Common/NavBar.jsx';
+import Footer from './Components/Common/Footer.jsx'
+import Home from './pages/Home.jsx'
+import About from './pages/About.jsx'
+import Services from './pages/Services.jsx'
+import Blog from './pages/Blog.jsx'
+import OrderTracking from './pages/OrderTracking.jsx'
+import ScrollToTop from './utils/ScrollToTop.jsx'
+import { OrderProvider } from './Context/orderContext.jsx'
 import './App.css'
 
 function App() {
