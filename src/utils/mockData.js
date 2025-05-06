@@ -36,7 +36,7 @@ const generateRandomPoint = (center, radius = 0.01) => {
   export const restaurants = [
     {
       id: 'rest1',
-      name: 'Shutup & Eat',
+      name: 'Spice Villa',
       image: 'https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       location: { lat: 40.7128, lng: -74.0060 }, // NYC
       rating: 4.7,
@@ -45,7 +45,7 @@ const generateRandomPoint = (center, radius = 0.01) => {
     },
     {
       id: 'rest2',
-      name: 'Burger King',
+      name: 'Burger Empire',
       image: 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       location: { lat: 40.7112, lng: -74.0125 },
       rating: 4.5,
@@ -54,7 +54,7 @@ const generateRandomPoint = (center, radius = 0.01) => {
     },
     {
       id: 'rest3',
-      name: 'Billus Kitchen',
+      name: 'Pasta Paradise',
       image: 'https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       location: { lat: 40.7200, lng: -74.0090 },
       rating: 4.8,
@@ -82,31 +82,26 @@ const generateRandomPoint = (center, radius = 0.01) => {
       driverName: 'Parrvesh Kumar',
       driverPhone: '+91 6969696969',
       driverPhoto: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      total: 34.95,
-      route: generateFakeRoute(
-        restaurants[0].location,
-        { lat: 40.7282, lng: -73.9942 }
-      )
+      total: 28.96
     },
     {
       id: 'order2',
       restaurant: restaurants[1],
       items: [
-        { name: 'Double Cheeseburger', quantity: 2, price: 8.99 },
-        { name: 'Fries (Large)', quantity: 1, price: 3.99 },
-        { name: 'Coke (Large)', quantity: 1, price: 2.50 },
-        { name: 'Chocolate Milkshake', quantity: 2, price: 4.99 }
+        { name: 'Double Cheeseburger', quantity: 2, price: 12.99 },
+        { name: 'Fries (Large)', quantity: 1, price: 5.99 },
+        { name: 'Chocolate Milkshake', quantity: 2, price: 6.99 }
       ],
       status: 'on-the-way',
       orderedAt: new Date(Date.now() - 35 * 60000), // 35 minutes ago
       estimatedDelivery: new Date(Date.now() + 10 * 60000), // 10 minutes from now
       deliveryAddress: {
-        address: '123 Netaji Subhas Palace, New Delhi, Delhi 110034',
+        address: '456 Park Ave, New York, NY 10022',
         location: { lat: 40.7580, lng: -73.9755 }
       },
-      driverName: 'Parrv Luthra',
-      driverPhone: '91 1234567890',
-      driverPhoto: 'https://t4.ftcdn.net/jpg/01/79/99/99/360_F_179999999_1mzWKikF52md2KxaKIh2yPC47A365Jtx.jpg',
+      driverName: 'Sarah Chen',
+      driverPhone: '(555) 987-6543',
+      driverPhoto: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       total: 45.95
     },
     {

@@ -292,11 +292,11 @@ function OrderTracking() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Delivery Fee</span>
-                    <span>$7.9</span>
+                    <span>79Rupees</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Tax</span>
-                    <span>$12.5</span>
+                    <span>125Rupees</span>
                   </div>
                   <div className="flex justify-between font-bold mt-2 pt-2 border-t border-gray-100">
                     <span>Total</span>
