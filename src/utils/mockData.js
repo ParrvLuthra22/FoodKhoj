@@ -37,7 +37,7 @@ export const restaurants = [
   {
     id: 'rest1',
     name: 'Shutup & Eat',
-    image: 'https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu4XRDUz3bnRzqAy_W5ALFyktYofrUzJCFhg&s',
     location: { lat: 40.7128, lng: -74.0060 }, // NYC
     rating: 4.7,
     cuisine: 'Indian',
@@ -46,7 +46,7 @@ export const restaurants = [
   {
     id: 'rest2',
     name: 'Burger King',
-    image: 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: 'https://i.pinimg.com/736x/70/38/01/703801fc16a7c10fdd7aadec9dc5ab81.jpg',
     location: { lat: 40.7112, lng: -74.0125 },
     rating: 4.5,
     cuisine: 'American',
@@ -55,7 +55,7 @@ export const restaurants = [
   {
     id: 'rest3',
     name: 'Billus Kitchen',
-    image: 'https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQXm6nuKcjT7n3JTa_g2JzGtly3mby6uhY_A&s',
     location: { lat: 40.7200, lng: -74.0090 },
     rating: 4.8,
     cuisine: 'Italian',
@@ -131,7 +131,6 @@ export const mockOrders = [
   }
 ]
 
-// Get current driver location based on order progress
 export const getCurrentDriverLocation = (order) => {
   if (!order || !order.route || order.status === 'ordered' || order.status === 'delivered') {
     return order?.restaurant?.location || { lat: 40.7128, lng: -74.0060 }
@@ -140,12 +139,9 @@ export const getCurrentDriverLocation = (order) => {
   const routeLength = order.route.length
   let progressIndex = 0
   
-  // Determine how far along the route the driver should be based on order status
   if (order.status === 'preparing') {
-    // Driver is at the restaurant
     progressIndex = 0
   } else if (order.status === 'on-the-way') {
-    // Calculate how far along the route the driver is based on time
     const totalDeliveryTime = order.estimatedDelivery - order.orderedAt
     const elapsedTime = Date.now() - order.orderedAt
     const progressPercent = Math.min(elapsedTime / totalDeliveryTime, 0.95)
@@ -156,15 +152,14 @@ export const getCurrentDriverLocation = (order) => {
   return order.route[progressIndex]
 }
 
-// Blog posts
 export const blogPosts = [
   {
     id: 'blog1',
     title: '5 Ways to Get the Most Out of Food Delivery Apps',
     excerpt: 'Learn how to save money and get the best service when ordering food online.',
     image: 'https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    author: 'Maya Patel',
-    date: 'May 15, 2023',
+    author: 'Maya Tyagi',
+    date: 'May 15, 2025',
     readTime: '5 min read',
     categories: ['Tips', 'Savings']
   },
@@ -172,9 +167,9 @@ export const blogPosts = [
     id: 'blog2',
     title: 'Behind the Scenes: A Day in the Life of a Delivery Driver',
     excerpt: "Discover what it's really like to be a food delivery driver in the gig economy.",
-    image: 'https://images.pexels.com/photos/2788792/pexels-photo-2788792.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    author: 'James Wilson',
-    date: 'June 2, 2023',
+    image: 'https://i.pinimg.com/736x/18/df/60/18df601f44404ea312113f75aed484d4.jpg',
+    author: 'Sunita Mehta',
+    date: 'June 2, 2025',
     readTime: '8 min read',
     categories: ['Stories', 'Careers']
   },
@@ -183,8 +178,8 @@ export const blogPosts = [
     title: 'The Technology Behind Real-Time Food Delivery Tracking',
     excerpt: 'A deep dive into the sophisticated systems that power modern delivery tracking.',
     image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    author: 'Dr. Aisha Johnson',
-    date: 'July 10, 2023',
+    author: 'Dr. Aisha Takia',
+    date: 'July 10, 2025',
     readTime: '10 min read',
     categories: ['Technology', 'Innovation']
   },
@@ -193,8 +188,8 @@ export const blogPosts = [
     title: 'Sustainable Food Delivery: Reducing Waste and Carbon Footprint',
     excerpt: 'How the industry is working to become more environmentally friendly.',
     image: 'https://images.pexels.com/photos/5945559/pexels-photo-5945559.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    author: 'Leo Richards',
-    date: 'August 22, 2023',
+    author: 'Leena Sharma',
+    date: 'August 22, 2025',
     readTime: '7 min read',
     categories: ['Sustainability', 'Future']
   }
@@ -228,30 +223,29 @@ export const faqData = [
   }
 ]
 
-// Team members
 export const teamMembers = [
   {
-    name: 'Rajiv Sharma',
+    name: 'Parrv Luthra',
     role: 'Founder & CEO',
     bio: 'Former Google Maps engineer with a passion for food and technology.',
-    image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    image: 'https://i.pinimg.com/736x/a2/0c/41/a20c4157ac8cc7e84c9262555923e39c.jpg'
   },
   {
-    name: 'Anika Patel',
+    name: 'Siya Kapoor',
     role: 'CTO',
     bio: 'Tech innovator with 15+ years of experience in location-based services.',
-    image: 'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    image: 'https://i.pinimg.com/736x/35/b9/75/35b975625ea33670de9dfc152fec2e91.jpg'
   },
   {
-    name: 'Miguel Rodriguez',
+    name: 'Aarav Singh',
     role: 'Head of Operations',
     bio: 'Restaurant industry veteran focused on creating seamless delivery experiences.',
-    image: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    image: 'https://i.pinimg.com/736x/16/13/8c/16138c62e20e751a5a03be61aa29c971.jpg'
   },
   {
-    name: 'Sarah Kim',
+    name: 'Nia Sharma',
     role: 'Lead Designer',
     bio: 'Award-winning UX/UI designer dedicated to intuitive user experiences.',
-    image: 'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    image: 'https://i.pinimg.com/736x/ca/ff/95/caff958c2022dce63d677fe2a1bef10f.jpg'
   }
 ]

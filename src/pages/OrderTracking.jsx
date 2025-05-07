@@ -14,7 +14,6 @@ function OrderTracking() {
   const timeIntervalRef = useRef(null)
   const locationIntervalRef = useRef(null)
   
-  // Load order data
   useEffect(() => {
     const order = trackOrder(orderId)
     setActiveOrder(order)
@@ -132,7 +131,6 @@ function OrderTracking() {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Order Info */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
               <div className="p-6">
@@ -152,8 +150,7 @@ function OrderTracking() {
                     {steps.find(step => step.id === activeOrder.status)?.label}
                   </div>
                 </div>
-                
-                {/* Restaurant Info */}
+              
                 <div className="flex items-center mb-6">
                   <img 
                     src={activeOrder.restaurant.image} 

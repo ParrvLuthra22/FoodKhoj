@@ -74,8 +74,8 @@ function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <img 
-                src="https://images.pexels.com/photos/3182834/pexels-photo-3182834.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                alt="Founding team" 
+                src="https://i.pinimg.com/736x/53/e7/b5/53e7b5f96529d78c598725b630920424.jpg" 
+                alt="Founder" 
                 className="rounded-xl shadow-lg"
               />
             </div>

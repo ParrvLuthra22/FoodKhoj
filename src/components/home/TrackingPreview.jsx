@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import { mockOrders, getCurrentDriverLocation } from '../../utils/mockData'
 
 function TrackingPreview() {
-  const [activeOrder, setActiveOrder] = useState(mockOrders[1]) 
-  const [driverLocation, setDriverLocation] = useState(null)
+  const [activeOrder] = useState(mockOrders[1]) 
   const [deliveryProgress, setDeliveryProgress] = useState(0)
 
   useEffect(() => {
@@ -23,9 +22,8 @@ function TrackingPreview() {
       
       setDeliveryProgress(progress)
       
-      setDriverLocation(getCurrentDriverLocation(activeOrder))
       const interval = setInterval(() => {
-        setDriverLocation(getCurrentDriverLocation(activeOrder))
+        getCurrentDriverLocation(activeOrder)
       }, 3000)
       
       return () => clearInterval(interval)

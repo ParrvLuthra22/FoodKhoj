@@ -130,7 +130,7 @@ function Blog() {
                     <div className="flex items-center">
                       <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden mr-2">
                         <img 
-                          src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+                          src="https://i.pinimg.com/736x/fb/26/a1/fb26a1bb894559b45aec322fe9b46e5f.jpg" 
                           alt={post.author}
                           className="w-full h-full object-cover"
                         />

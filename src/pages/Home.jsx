@@ -16,7 +16,6 @@ function Home() {
       <SellingPoints />
       <RestaurantSection />
       
-      {/* Testimonials */}
       <section className="py-16 bg-gradient-to-b from-white to-secondary-50">
         <div className="container-custom">
           <div className="text-center mb-12">
@@ -48,17 +47,17 @@ function Home() {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">
-                "The real-time tracking feature is a game-changer! I can see exactly where my food is and plan accordingly. No more uncertainty about when dinner will arrive."
+                "This real-time tracking feature is just amazing, yaar! I can see exactly where my food is and get everything ready on time. No more guessing when dinner will come!"
               </p>
               <div className="flex items-center">
                 <img 
-                  src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  src="https://i.pinimg.com/736x/b0/06/60/b00660de48b31bc199a718632dfc8871.jpg"
                   alt="Customer" 
                   className="w-10 h-10 rounded-full mr-3 object-cover"
                 />
                 <div>
-                  <p className="font-medium">Michael Chen</p>
-                  <p className="text-sm text-gray-500">New York, NY</p>
+                  <p className="font-medium">Rahul Oberoi</p>
+                  <p className="text-sm text-gray-500">Mumbai, India</p>
                 </div>
               </div>
             </div>
@@ -82,17 +81,17 @@ function Home() {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">
-                "As a busy parent, I love being able to track our family dinner. The ETA is spot-on, and the kids love watching the delivery person approach on the map!"
+              "As a busy mom, I absolutely love being able to track our family dinner. The ETA is always spot-on, and the kids get so excited watching the delivery guy come on the map. It’s like a little game for them!"
               </p>
               <div className="flex items-center">
                 <img 
-                  src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  src="https://i.pinimg.com/736x/46/95/25/4695257ca5ef1ef31b2a40d20f3047ec.jpg"
                   alt="Customer" 
                   className="w-10 h-10 rounded-full mr-3 object-cover"
                 />
                 <div>
-                  <p className="font-medium">Sarah Johnson</p>
-                  <p className="text-sm text-gray-500">Boston, MA</p>
+                  <p className="font-medium">Sara Arora</p>
+                  <p className="text-sm text-gray-500">Chandigarh, Punjab</p>
                 </div>
               </div>
             </div>
@@ -116,17 +115,17 @@ function Home() {
                 </svg>
               </div>
               <p className="text-gray-600 mb-4">
-                "Finally, a delivery app that actually shows where your food is! The estimated times are accurate, and I love being able to contact my driver directly if needed."
+                "Finally, a delivery app that actually shows where your food is! The estimated times are spot-on, and I love that I can directly contact my driver if I need to. Such a game-changer!"
               </p>
               <div className="flex items-center">
                 <img 
-                  src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  src="https://i.pinimg.com/736x/e5/e3/ce/e5e3ced65b2ebd0486c40498a2af5e3f.jpg"
                   alt="Customer" 
                   className="w-10 h-10 rounded-full mr-3 object-cover"
                 />
                 <div>
-                  <p className="font-medium">David Patel</p>
-                  <p className="text-sm text-gray-500">Chicago, IL</p>
+                  <p className="font-medium">Aneesh Patil</p>
+                  <p className="text-sm text-gray-500">Surat, Gujrat</p>
                 </div>
               </div>
             </div>
