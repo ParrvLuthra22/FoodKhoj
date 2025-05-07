@@ -14,7 +14,6 @@ import './App.css'
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    // Simulate initial loading
     const timer = setTimeout(() => setIsLoading(false), 1500)
     return () => clearTimeout(timer)
   }, [])
