@@ -8,12 +8,11 @@ import Services from './pages/Services.jsx'
 import Blog from './pages/Blog.jsx'
 import OrderTracking from './pages/OrderTracking.jsx'
 import ScrollToTop from './utils/ScrollToTop.jsx'
-import { OrderProvider } from './context/ordercontext.jsx'
+import OrderProvider from './Context/orderContext.jsx';
 import './App.css'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
-
   useEffect(() => {
     // Simulate initial loading
     const timer = setTimeout(() => setIsLoading(false), 1500)

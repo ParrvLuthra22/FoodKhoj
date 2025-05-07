@@ -7,7 +7,7 @@ export function useOrder() {
   return useContext(OrderContext)
 }
 
-export function OrderProvider({ children }) {
+export default function OrderProvider({ children }) {
   const [orders, setOrders] = useState(mockOrders)
   const [activeOrder, setActiveOrder] = useState(null)
   
