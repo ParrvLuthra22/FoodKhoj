@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { MapPin, CreditCard, Clock, CheckCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,6 +10,7 @@ function CheckoutPage() {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [generatedOrderId, setGeneratedOrderId] = useState('');
   
   const [deliveryAddress, setDeliveryAddress] = useState({
     street: '',
@@ -27,23 +28,38 @@ function CheckoutPage() {
 
   const deliveryFee = 2.99;
   const subtotal = getTotalPrice();
-  const tax = subtotal * 0.08; // 8% tax
+  const tax = subtotal * 0.08; 
   const total = subtotal + deliveryFee + tax;
+
+  const generateOrderId = () => {
+    const prefix = 'FD';
+    const randomNum = Math.floor(Math.random() * 90000) + 10000;
+    return `${prefix}${randomNum}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate order processing
     setTimeout(() => {
+      const orderId = generateOrderId();
+      setGeneratedOrderId(orderId);
       setOrderPlaced(true);
       clearCart();
       setLoading(false);
       
-      // Redirect to order confirmation after 3 seconds
-      setTimeout(() => {
-        navigate('/orders');
-      }, 3000);
+      const orderData = {
+        id: orderId,
+        restaurant: cart.restaurant?.name || 'Restaurant',
+        items: cart.items.map(item => item.name),
+        total: total.toFixed(2),
+        address: `${deliveryAddress.street}, ${deliveryAddress.city}, ${deliveryAddress.zipCode}`,
+        timestamp: new Date().toISOString()
+      };
+      
+      const existingOrders = JSON.parse(localStorage.getItem('userOrders') || '[]');
+      existingOrders.push(orderData);
+      localStorage.setItem('userOrders', JSON.stringify(existingOrders));
     }, 2000);
   };
 
@@ -63,12 +79,33 @@ function CheckoutPage() {
         <div className="text-center">
           <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h1>
+          <div className="bg-white rounded-lg p-6 shadow-lg mb-6 max-w-md mx-auto">
+            <p className="text-lg text-gray-600 mb-2">Your Order ID:</p>
+            <p className="text-2xl font-bold text-primary-500 mb-4">{generatedOrderId}</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Save this ID to track your delivery
+            </p>
+            <Link
+              to="/track"
+              className="btn btn-primary w-full"
+            >
+              Track Your Order
+            </Link>
+          </div>
           <p className="text-xl text-gray-600 mb-6">
             Your order from {cart.restaurant?.name} has been confirmed.
           </p>
-          <p className="text-gray-600">
-            You'll receive a tracking link shortly. Redirecting to your orders...
+          <p className="text-gray-600 mb-4">
+            Estimated delivery time: 25-30 minutes
           </p>
+          <div className="flex justify-center space-x-4">
+            <Link to="/orders" className="btn btn-outline">
+              View All Orders
+            </Link>
+            <Link to="/restaurants" className="btn btn-outline">
+              Order Again
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -80,9 +117,7 @@ function CheckoutPage() {
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Order Form */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Delivery Address */}
             <div className="card p-6">
               <div className="flex items-center mb-4">
                 <MapPin className="h-6 w-6 text-primary-500 mr-2" />
@@ -149,7 +184,6 @@ function CheckoutPage() {
               </form>
             </div>
 
-            {/* Payment Method */}
             <div className="card p-6">
               <div className="flex items-center mb-4">
                 <CreditCard className="h-6 w-6 text-primary-500 mr-2" />
@@ -218,7 +252,6 @@ function CheckoutPage() {
             </div>
           </div>
 
-          {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="card p-6 sticky top-24">
               <h2 className="text-xl font-semibold mb-4">Order Summary</h2>

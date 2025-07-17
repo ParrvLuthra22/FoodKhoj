@@ -23,6 +23,7 @@ function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Restaurants', path: '/restaurants' },
+    { name: 'Track Order', path: '/track' },
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Blog', path: '/blog' },
@@ -78,7 +79,6 @@ function Navbar() {
             </span>
           </Link>
 
-          {/* Search bar - visible on desktop */}
           <div className="hidden md:flex items-center max-w-md w-full mx-4 relative">
             <div className="relative w-full">
               <input
@@ -90,7 +90,6 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
@@ -106,7 +105,6 @@ function Navbar() {
               </Link>
             ))}
             
-            {/* Cart Button */}
             <button
               onClick={() => setShowCartSidebar(true)}
               className="relative p-2 text-gray-700 hover:text-primary-500 transition-colors"
@@ -119,7 +117,6 @@ function Navbar() {
               )}
             </button>
 
-            {/* User Menu */}
             {currentUser ? (
               <div className="relative">
                 <button
@@ -173,7 +170,6 @@ function Navbar() {
             )}
           </nav>
 
-          {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
             onClick={toggleMenu}
@@ -187,11 +183,9 @@ function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 absolute top-full left-0 right-0 shadow-md">
             <div className="container mx-auto py-3">
-              {/* Mobile search */}
               <div className="relative mb-4">
                 <input
                   type="text"
@@ -269,14 +263,12 @@ function Navbar() {
         )}
       </header>
 
-      {/* Auth Modal */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         initialMode={authMode}
       />
 
-      {/* Cart Sidebar */}
       <CartSidebar
         isOpen={showCartSidebar}
         onClose={() => setShowCartSidebar(false)}

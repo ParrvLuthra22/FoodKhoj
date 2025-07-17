@@ -9,6 +9,8 @@ import BlogPage from './pages/BlogPage';
 import RestaurantsPage from './pages/RestaurantsPage';
 import RestaurantDetailPage from './pages/RestaurantDetailPage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrdersPage from './pages/OrdersPage';
+import TrackingPage from './pages/TrackingPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from './components/layout/Layout';
 
@@ -26,6 +28,8 @@ function App() {
               <Route path="restaurants" element={<RestaurantsPage />} />
               <Route path="restaurant/:id" element={<RestaurantDetailPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="orders" element={<OrdersPage />} />
+              <Route path="track" element={<TrackingPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>

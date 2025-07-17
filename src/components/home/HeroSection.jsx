@@ -19,8 +19,8 @@ function HeroSection() {
                 <MapPin className="mr-2 h-5 w-5" />
                 Order Now
               </Link>
-              <Link to="/services" className="btn btn-outline text-base px-6 py-3">
-                Learn More
+              <Link to="/track" className="btn btn-outline text-base px-6 py-3">
+                Track Order
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>

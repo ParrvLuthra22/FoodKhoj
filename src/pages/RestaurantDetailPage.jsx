@@ -12,11 +12,10 @@ function RestaurantDetailPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { setRestaurant: setCartRestaurant } = useCart();
 
-  // Mock data - in a real app, this would come from Firebase
   useEffect(() => {
     const mockRestaurant = {
       id: id,
-      name: 'Bella Italia',
+      name: 'Billus Hut',
       cuisine: 'Italian',
       rating: 4.8,
       deliveryTime: 25,
@@ -25,8 +24,8 @@ function RestaurantDetailPage() {
       isOpen: true,
       image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
       description: 'Authentic Italian cuisine with fresh ingredients and traditional recipes passed down through generations.',
-      address: '123 Main Street, Downtown',
-      phone: '(555) 123-4567'
+      address: '213 NSP, Pitampura, New Delhi, Delhi 110034',
+      phone: '11032343'
     };
 
     const mockMenu = [

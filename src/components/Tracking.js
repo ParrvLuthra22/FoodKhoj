@@ -10,7 +10,6 @@ export function initializeTracking() {
 }
 
 function updateTrackingStatus(orderId) {
-  // Mock tracking data
   const status = {
     status: 'on the way',
     estimatedTime: '15-20 min',
