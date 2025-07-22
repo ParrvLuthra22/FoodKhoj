@@ -59,7 +59,6 @@ function Navbar() {
 
   const handleCheckout = () => {
     setShowCartSidebar(false);
-    // Navigation to checkout will be handled by the checkout button in CartSidebar
   };
 
   const totalItems = getTotalItems();

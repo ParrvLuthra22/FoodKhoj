@@ -13,58 +13,58 @@ function RestaurantsPage() {
     const mockRestaurants = [
       {
         id: '1',
-        name: 'Bella Italia',
+        name: 'Billus Hut',
         cuisine: 'Italian',
         rating: 4.8,
         deliveryTime: 25,
         distance: 1.2,
         deliveryFee: 2.99,
         isOpen: true,
-        image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://content3.jdmagicbox.com/v2/comp/delhi/y3/011pxx11.xx11.210217145948.z1y3/catalogue/-s2g3167hz7.jpg'
       },
       {
         id: '2',
-        name: 'Dragon Palace',
+        name: 'Kings Kitchen',
         cuisine: 'Chinese',
         rating: 4.6,
         deliveryTime: 30,
         distance: 2.1,
         deliveryFee: 3.49,
         isOpen: true,
-        image: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ykWNVwwmdSeI3zcmb82qgS2UJCNMNYHwtw&s'
       },
       {
         id: '3',
-        name: 'Burger Junction',
+        name: 'Burger King',
         cuisine: 'American',
         rating: 4.4,
         deliveryTime: 20,
         distance: 0.8,
         deliveryFee: 1.99,
         isOpen: true,
-        image: 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://play-lh.googleusercontent.com/LajmY4cNQiCJ1xmLt-BoJjG-ChCmZncapS0KR2PzwB-8UeypsKMH4RYfw36xi-MXSj2b'
       },
       {
         id: '4',
-        name: 'Spice Garden',
+        name: 'Spice Hub',
         cuisine: 'Indian',
         rating: 4.7,
         deliveryTime: 35,
         distance: 2.8,
         deliveryFee: 3.99,
         isOpen: false,
-        image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/72/7b/29/spice-hub.jpg?w=900&h=-1&s=1'
       },
       {
         id: '5',
-        name: 'Sushi Zen',
+        name: 'Kogai Sushi',
         cuisine: 'Japanese',
         rating: 4.9,
         deliveryTime: 40,
         distance: 3.2,
         deliveryFee: 4.49,
         isOpen: true,
-        image: 'https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1nDd7b92TB2IN0ZLDXMdcmPkMoPckJ3fZpw&s'
       },
       {
         id: '6',
@@ -75,7 +75,7 @@ function RestaurantsPage() {
         distance: 1.5,
         deliveryFee: 2.49,
         isOpen: true,
-        image: 'https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+        image: 'https://menufyproduction.imgix.net/637206602385508287+157242.png?auto=compress,format&h=1080&w=1920&fit=max'
       }
     ];
     setRestaurants(mockRestaurants);

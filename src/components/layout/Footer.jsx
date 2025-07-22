@@ -7,7 +7,6 @@ function Footer() {
     <footer className="bg-gray-900 text-gray-300 pt-16 pb-8">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Company Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <MapPin className="h-7 w-7 text-primary-500" />
@@ -49,7 +48,6 @@ function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -71,13 +69,12 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-primary-500 mr-2 mt-0.5" />
-                <span>123 Food Street, Cuisine City, FC 12345</span>
+                <span>Sector 52 Gurgaon Haryana India 122022</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-primary-500 mr-2" />
@@ -90,7 +87,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
           <div>
             <h3 className="text-white text-lg font-semibold mb-4">Newsletter</h3>
             <p className="text-gray-400 mb-4">

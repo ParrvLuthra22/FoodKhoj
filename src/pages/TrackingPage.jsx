@@ -1,76 +1,68 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, MapPin, Clock, User, Phone, MessageCircle, Navigation, CheckCircle } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import ChatModal from '../components/chat/ChatModal';
 
 function TrackingPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [orderId, setOrderId] = useState('');
   const [trackingData, setTrackingData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [isDelivered, setIsDelivered] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const { currentUser } = useAuth();
 
-  const mockDeliveryData = {
-    'FD12345': {
-      restaurant: 'Billus Hut',
-      items: ['White Sauce Pasta', 'Caesar Salad'],
-      total: 24.99,
-      address: '213 NSP, Pitampura, New Delhi, Delhi 110034',
-      driver: {
-        name: 'Parrv Luthra',
-        phone: '+91 97283 23123',
-        eta: '15-20 min',
-        vehicle: 'Porsche 911 Carrera',
-        rating: 5
-      },
-      estimatedTime: 10, 
-      mapImage: 'https://c.ndtvimg.com/2024-07/aa1m7sag_swiggy-order-tracking-screen-shows-agent-followed-by-ghost-internet-reacts_625x300_15_July_24.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=675'
-    },
-    'FD12346': {
-      restaurant: 'Kings Kitchen',
-      items: ['Sweet & Sour Chicken', 'Fried Rice'],
-      total: 18.50,
-      address: '432 Andheri East, Bandra, Mumbai, Maharastra 11201',
-      driver: {
-        name: 'Aayrish Singh',
-        phone: '+91 93234 23123',
-        vehicle: 'Ferrari 250 GTO',
-        rating: 4.9
-      },
-      estimatedTime: 8,
-      mapImage: 'https://images.hindustantimes.com/img/2022/08/24/1600x900/house-of-the-dragon-swiggy-replaces-motorbike-with-dragon-icon_1661350731957_1661350761704_1661350761704.jpg'
-    },
-    'FD12347': {
-      restaurant: 'Burger King',
-      items: ['Classic Burger', 'Fries', 'Milkshake'],
-      total: 15.75,
-      address: '789 peeragarhi, rohtak road, new delhi, Delhi 110043',
-      driver: {
-        name: 'Aayushman Sharma',
-        phone: '+91 96437 09323',
-        vehicle: 'Ford Focus - DEF 456',
-        rating: 4.7
-      },
-      estimatedTime: 12,
-      mapImage: 'https://img-cdn.publive.online/fit-in/1200x675/afaqs/media/post_attachments/4213b2556bf6e008b6b6ccd3483180569c5242ed74e2357d3a43d7a4dae2adeb.jpg'
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const trackingIdFromUrl = urlParams.get('id');
+    if (trackingIdFromUrl) {
+      setOrderId(trackingIdFromUrl);
+      handleTrackOrderById(trackingIdFromUrl);
     }
-  };
+  }, [location]);
 
-  const handleTrackOrder = (e) => {
-    e.preventDefault();
-    if (!orderId.trim()) return;
-
+  const handleTrackOrderById = async (trackingId) => {
     setLoading(true);
     
-    setTimeout(() => {
-      const data = mockDeliveryData[orderId.toUpperCase()];
+    try {
+      const existingOrders = JSON.parse(localStorage.getItem('orders') || '{}');
+      const data = existingOrders[trackingId];
+      
       if (data) {
         setTrackingData(data);
-        setTimeRemaining(data.estimatedTime * 60); 
+        
+        const estimatedDelivery = new Date(data.estimatedDelivery);
+        const now = new Date();
+        const timeDiff = Math.max(0, Math.floor((estimatedDelivery - now) / 1000));
+        setTimeRemaining(timeDiff);
         setIsDelivered(false);
+
+
+        if (location.search.includes('id=')) {
+          setTimeout(() => {
+            alert(`Order placed successfully! Your tracking ID is: ${trackingId}`);
+          }, 500);
+        }
       } else {
         setTrackingData(null);
       }
+    } catch (error) {
+      console.error('Error tracking order:', error);
+      setTrackingData(null);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
+  };
+
+  const handleTrackOrder = async (e) => {
+    e.preventDefault();
+    if (!orderId.trim()) return;
+
+    navigate(`/track?id=${orderId.toUpperCase()}`);
+    handleTrackOrderById(orderId.toUpperCase());
   };
 
   useEffect(() => {
@@ -135,18 +127,9 @@ function TrackingPage() {
             </form>
             
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600 mb-2">Try these sample order IDs:</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {Object.keys(mockDeliveryData).map(id => (
-                  <button
-                    key={id}
-                    onClick={() => setOrderId(id)}
-                    className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-200 transition-colors"
-                  >
-                    {id}
-                  </button>
-                ))}
-              </div>
+              <p className="text-sm text-gray-600 mb-2">
+                Enter your order ID from checkout to track your delivery
+              </p>
             </div>
           </div>
 
@@ -199,16 +182,18 @@ function TrackingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <h3 className="font-semibold mb-2">Order Details</h3>
-                    <p className="text-gray-600 mb-1">Order ID: {orderId}</p>
-                    <p className="text-gray-600 mb-1">Restaurant: {trackingData.restaurant}</p>
-                    <p className="text-gray-600 mb-1">Items: {trackingData.items.join(', ')}</p>
+                    <p className="text-gray-600 mb-1">Order ID: {trackingData.id}</p>
+                    <p className="text-gray-600 mb-1">Restaurant: {trackingData.restaurant?.name}</p>
+                    <p className="text-gray-600 mb-1">Items: {trackingData.items?.map(item => item.name).join(', ')}</p>
                     <p className="text-gray-600">Total: ${trackingData.total}</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Delivery Address</h3>
                     <div className="flex items-start">
                       <MapPin className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
-                      <p className="text-gray-600">{trackingData.address}</p>
+                      <p className="text-gray-600">
+                        {trackingData.deliveryAddress?.street}, {trackingData.deliveryAddress?.city}, {trackingData.deliveryAddress?.zipCode}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -217,7 +202,7 @@ function TrackingPage() {
               <div className="card overflow-hidden">
                 <div className="relative">
                   <img
-                    src={trackingData.mapImage}
+                    src="https://images.pexels.com/photos/2882234/pexels-photo-2882234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                     alt="Delivery location map"
                     className="w-full h-64 object-cover"
                   />
@@ -273,6 +258,7 @@ function TrackingPage() {
                   <div className="flex space-x-3">
                     <button className="bg-primary-500 text-white p-3 rounded-lg hover:bg-primary-600 transition-colors">
                       <MessageCircle className="h-5 w-5" />
+                      onClick={() => setShowChat(true)}
                     </button>
                     <a
                       href={`tel:${trackingData.driver.phone}`}
@@ -328,6 +314,13 @@ function TrackingPage() {
           )}
         </div>
       </div>
+      
+      <ChatModal
+        isOpen={showChat}
+        onClose={() => setShowChat(false)}
+        orderId={trackingData?.id}
+        driverInfo={trackingData?.driver}
+      />
     </div>
   );
 }

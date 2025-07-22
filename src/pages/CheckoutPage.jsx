@@ -3,14 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import { MapPin, CreditCard, Clock, CheckCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { createOrder } from '../services/orderService';
 
 function CheckoutPage() {
   const navigate = useNavigate();
   const { cart, getTotalPrice, clearCart } = useCart();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const [generatedOrderId, setGeneratedOrderId] = useState('');
+  const [error, setError] = useState('');
   
   const [deliveryAddress, setDeliveryAddress] = useState({
     street: '',
@@ -31,36 +31,56 @@ function CheckoutPage() {
   const tax = subtotal * 0.08; 
   const total = subtotal + deliveryFee + tax;
 
-  const generateOrderId = () => {
-    const prefix = 'FD';
-    const randomNum = Math.floor(Math.random() * 90000) + 10000;
-    return `${prefix}${randomNum}`;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
 
-    setTimeout(() => {
-      const orderId = generateOrderId();
-      setGeneratedOrderId(orderId);
-      setOrderPlaced(true);
-      clearCart();
-      setLoading(false);
-      
+    try {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 9000) + 1000;
+      const trackingId = `FD${timestamp.toString().slice(-6)}${randomNum}`;
+
       const orderData = {
-        id: orderId,
-        restaurant: cart.restaurant?.name || 'Restaurant',
-        items: cart.items.map(item => item.name),
+        id: trackingId,
+        restaurant: {
+          id: cart.restaurant?.id,
+          name: cart.restaurant?.name || 'Restaurant'
+        },
+        items: cart.items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
         total: total.toFixed(2),
-        address: `${deliveryAddress.street}, ${deliveryAddress.city}, ${deliveryAddress.zipCode}`,
-        timestamp: new Date().toISOString()
+        deliveryAddress: deliveryAddress,
+        paymentMethod: paymentMethod,
+        status: 'confirmed',
+        createdAt: new Date().toISOString(),
+        estimatedDelivery: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes from now
+        driver: {
+          name: 'Parrv Luthra',
+          phone: '+91 97283 23123',
+          vehicle: 'Porsche 911 Carrera',
+          rating: 5
+        }
       };
+
+      const existingOrders = JSON.parse(localStorage.getItem('orders') || '{}');
+      existingOrders[trackingId] = orderData;
+      localStorage.setItem('orders', JSON.stringify(existingOrders));
       
-      const existingOrders = JSON.parse(localStorage.getItem('userOrders') || '[]');
-      existingOrders.push(orderData);
-      localStorage.setItem('userOrders', JSON.stringify(existingOrders));
-    }, 2000);
+      clearCart();
+      
+      navigate(`/track?id=${trackingId}`);
+      
+    } catch (error) {
+      console.error('Error placing order:', error);
+      setError('Failed to place order. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!currentUser) {
@@ -73,50 +93,18 @@ function CheckoutPage() {
     return null;
   }
 
-  if (orderPlaced) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h1>
-          <div className="bg-white rounded-lg p-6 shadow-lg mb-6 max-w-md mx-auto">
-            <p className="text-lg text-gray-600 mb-2">Your Order ID:</p>
-            <p className="text-2xl font-bold text-primary-500 mb-4">{generatedOrderId}</p>
-            <p className="text-sm text-gray-600 mb-4">
-              Save this ID to track your delivery
-            </p>
-            <Link
-              to="/track"
-              className="btn btn-primary w-full"
-            >
-              Track Your Order
-            </Link>
-          </div>
-          <p className="text-xl text-gray-600 mb-6">
-            Your order from {cart.restaurant?.name} has been confirmed.
-          </p>
-          <p className="text-gray-600 mb-4">
-            Estimated delivery time: 25-30 minutes
-          </p>
-          <div className="flex justify-center space-x-4">
-            <Link to="/orders" className="btn btn-outline">
-              View All Orders
-            </Link>
-            <Link to="/restaurants" className="btn btn-outline">
-              Order Again
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="pt-20 bg-gray-50 min-h-screen">
       <div className="container py-8">
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {error && (
+            <div className="lg:col-span-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+              {error}
+            </div>
+          )}
+          
           <div className="lg:col-span-2 space-y-6">
             <div className="card p-6">
               <div className="flex items-center mb-4">

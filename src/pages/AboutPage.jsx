@@ -31,7 +31,6 @@ function AboutPage() {
 
   return (
     <div>
-      {/* Hero Section */}
       <section className="pt-28 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -69,7 +68,6 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Mission and Vision */}
       <section className="section bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
@@ -136,7 +134,6 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
       <section className="section bg-white">
         <div className="container">
           <div className="text-center mb-12">

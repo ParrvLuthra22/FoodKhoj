@@ -32,7 +32,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
       }
     });
 
-    // Listen for typing indicator
     const typingRef = ref(database, `chats/${chatId}/typing`);
     const typingUnsubscribe = onValue(typingRef, (snapshot) => {
       const data = snapshot.val();
@@ -94,7 +93,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
     setNewMessage(e.target.value);
     updateTypingStatus(true);
     
-    // Clear typing indicator after 2 seconds of no typing
     setTimeout(() => {
       updateTypingStatus(false);
     }, 2000);
@@ -111,7 +109,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl max-w-md w-full h-[600px] flex flex-col">
-        {/* Header */}
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center">
             <div className="bg-primary-500 rounded-full p-2 mr-3">
@@ -132,7 +129,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
           </button>
         </div>
 
-        {/* Driver Info */}
         {driverInfo && (
           <div className="p-3 bg-gray-50 border-b border-gray-200">
             <div className="flex items-center">
@@ -155,7 +151,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
           </div>
         )}
 
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {messages.length === 0 ? (
             <div className="text-center text-gray-500 mt-8">
@@ -211,7 +206,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Message Input */}
         <div className="p-4 border-t border-gray-200">
           <form onSubmit={sendMessage} className="flex items-center space-x-2">
             <input
@@ -231,7 +225,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
             </button>
           </form>
           
-          {/* Quick Messages */}
           <div className="flex flex-wrap gap-2 mt-3">
             {[
               "Are you close?",

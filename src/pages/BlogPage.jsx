@@ -73,7 +73,6 @@ function BlogPage() {
 
   return (
     <div>
-      {/* Hero Section */}
       <section className="pt-28 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -85,7 +84,6 @@ function BlogPage() {
         </div>
       </section>
 
-      {/* Featured Post */}
       <section className="section bg-white">
         <div className="container">
           <h2 className="text-2xl font-bold mb-8">Featured Article</h2>
@@ -130,11 +128,10 @@ function BlogPage() {
         </div>
       </section>
 
-      {/* Blog Posts */}
+
       <section className="section bg-gray-50">
         <div className="container">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main content */}
             <div className="lg:w-3/4">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold">Latest Articles</h2>
@@ -200,9 +197,7 @@ function BlogPage() {
               </div>
             </div>
 
-            {/* Sidebar */}
             <div className="lg:w-1/4">
-              {/* Search */}
               <div className="card p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-4">Search Articles</h3>
                 <div className="relative">
@@ -215,7 +210,6 @@ function BlogPage() {
                 </div>
               </div>
 
-              {/* Categories */}
               <div className="card p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-4">Categories</h3>
                 <ul className="space-y-2">
@@ -235,7 +229,6 @@ function BlogPage() {
                 </ul>
               </div>
 
-              {/* Popular Posts */}
               <div className="card p-6">
                 <h3 className="text-lg font-semibold mb-4">Popular Posts</h3>
                 <div className="space-y-4">
@@ -264,7 +257,6 @@ function BlogPage() {
         </div>
       </section>
 
-      {/* Newsletter */}
       <section className="py-16 bg-primary-500">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">

@@ -8,11 +8,9 @@ function TrackingPreview() {
 
   const handleTrackOrder = (e) => {
     e.preventDefault();
-    // In a real app, this would navigate to a tracking page with the order ID
     console.log('Tracking order:', orderId);
   };
 
-  // Mock delivery data
   const deliveryStatus = 'on the way';
   const estimatedTime = '15-20 min';
   const distance = '2.5 km away';
