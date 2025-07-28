@@ -48,7 +48,7 @@ function HeroSection() {
 
           <div className="rounded-2xl overflow-hidden shadow-medium relative animate-float">
             <img
-              src="https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src="https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-6d2c-61fa-8d02-b0927b391811/raw?se=2025-07-28T23%3A58%3A29Z&sp=r&sv=2024-08-04&sr=b&scid=62159fa2-4c4b-5882-9e9b-b3d84109a596&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-28T18%3A38%3A22Z&ske=2025-07-29T18%3A38%3A22Z&sks=b&skv=2024-08-04&sig=4d%2BL9CGShGPoTDmJYdFnSyNQOb%2B7MWjUCmKQ9npUwoQ%3D"
               alt="Food delivery tracking"
               className="w-full h-auto rounded-2xl"
             />
