@@ -1,8 +1,106 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Search, MapPin, Clock, User, Phone, MessageCircle, Navigation, CheckCircle } from 'lucide-react';
+import { Search, MapPin, Clock, User, Phone, MessageCircle, Navigation, CheckCircle, Crosshair } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import ChatModal from '../components/chat/ChatModal';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+const deliveryIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const driverIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const userLocationIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const restaurantIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const delhiRestaurants = [
+  {
+    name: "Khan Chacha",
+    location: [28.7041, 77.1025], 
+    cuisine: "Kebabs & Rolls",
+    rating: 4.5
+  },
+  {
+    name: "Karim's",
+    location: [28.6562, 77.2410], 
+    cuisine: "Mughlai",
+    rating: 4.3
+  },
+  {
+    name: "Dilli Haat",
+    location: [28.5684, 77.2350], 
+    cuisine: "Street Food",
+    rating: 4.2
+  },
+  {
+    name: "Bukhara",
+    location: [28.6129, 77.2295], 
+    cuisine: "North Indian",
+    rating: 4.8
+  },
+  {
+    name: "Pindi",
+    location: [28.6139, 77.2090], 
+    cuisine: "Punjabi",
+    rating: 4.1
+  }
+];
+
+function MapUpdater({ driverPosition, userLocation, restaurantLocation }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (driverPosition) {
+      map.setView(driverPosition, 15);
+    }
+  }, [driverPosition, map]);
+  
+  useEffect(() => {
+    if (userLocation && restaurantLocation) {
+      const bounds = L.latLngBounds([restaurantLocation, userLocation]);
+      map.fitBounds(bounds, { padding: [20, 20] });
+    }
+  }, [userLocation, restaurantLocation, map]);
+  
+  return null;
+}
 
 function TrackingPage() {
   const location = useLocation();
@@ -13,7 +111,80 @@ function TrackingPage() {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [isDelivered, setIsDelivered] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [driverPosition, setDriverPosition] = useState([28.7041, 77.1025]); 
+  const [userLocation, setUserLocation] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [locationError, setLocationError] = useState(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [routePath, setRoutePath] = useState([]);
   const { currentUser } = useAuth();
+
+  const deliveryLocation = userLocation || [28.6139, 77.2090]; 
+
+  const generateFakeRoute = (start, end) => {
+    const route = [start];
+    
+    const numWaypoints = Math.floor(Math.random() * 3) + 3;
+    
+    for (let i = 1; i <= numWaypoints; i++) {
+      const lat = start[0] + (end[0] - start[0]) * (i / (numWaypoints + 1)) + (Math.random() - 0.5) * 0.01;
+      const lng = start[1] + (end[1] - start[1]) * (i / (numWaypoints + 1)) + (Math.random() - 0.5) * 0.01;
+      route.push([lat, lng]);
+    }
+    
+    route.push(end);
+    return route;
+  };
+
+  const getUserLocation = () => {
+    setLocationLoading(true);
+    setLocationError(null);
+
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by this browser.');
+      setLocationLoading(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newUserLocation = [latitude, longitude];
+        setUserLocation(newUserLocation);
+        
+        if (selectedRestaurant) {
+          const route = generateFakeRoute(selectedRestaurant.location, newUserLocation);
+          setRoutePath(route);
+        }
+        
+        setLocationLoading(false);
+      },
+      (error) => {
+        let errorMessage = 'Unable to retrieve your location.';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access denied. Please enable location services.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out.';
+            break;
+          default:
+            errorMessage = 'An unknown error occurred.';
+            break;
+        }
+        setLocationError(errorMessage);
+        setLocationLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000
+      }
+    );
+  };
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -40,6 +211,16 @@ function TrackingPage() {
         setTimeRemaining(timeDiff);
         setIsDelivered(false);
 
+        const randomRestaurant = delhiRestaurants[Math.floor(Math.random() * delhiRestaurants.length)];
+        setSelectedRestaurant(randomRestaurant);
+        setDriverPosition(randomRestaurant.location);
+
+        if (userLocation) {
+          const route = generateFakeRoute(randomRestaurant.location, userLocation);
+          setRoutePath(route);
+        }
+
+        simulateDriverMovement();
 
         if (location.search.includes('id=')) {
           setTimeout(() => {
@@ -55,6 +236,26 @@ function TrackingPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const simulateDriverMovement = () => {
+    if (!selectedRestaurant || !userLocation) return;
+    
+    const route = generateFakeRoute(selectedRestaurant.location, userLocation);
+    setRoutePath(route);
+    
+    let currentWaypointIndex = 0;
+    
+    const interval = setInterval(() => {
+      if (currentWaypointIndex < route.length - 1) {
+        setDriverPosition(route[currentWaypointIndex]);
+        currentWaypointIndex++;
+      } else {
+        setDriverPosition(userLocation);
+        clearInterval(interval);
+      }
+    }, 2000); 
+    return () => clearInterval(interval);
   };
 
   const handleTrackOrder = async (e) => {
@@ -183,7 +384,7 @@ function TrackingPage() {
                   <div>
                     <h3 className="font-semibold mb-2">Order Details</h3>
                     <p className="text-gray-600 mb-1">Order ID: {trackingData.id}</p>
-                    <p className="text-gray-600 mb-1">Restaurant: {trackingData.restaurant?.name}</p>
+                    <p className="text-gray-600 mb-1">Restaurant: {selectedRestaurant?.name || trackingData.restaurant?.name}</p>
                     <p className="text-gray-600 mb-1">Items: {trackingData.items?.map(item => item.name).join(', ')}</p>
                     <p className="text-gray-600">Total: ${trackingData.total}</p>
                   </div>
@@ -192,7 +393,7 @@ function TrackingPage() {
                     <div className="flex items-start">
                       <MapPin className="h-5 w-5 text-gray-500 mr-2 mt-0.5" />
                       <p className="text-gray-600">
-                        {trackingData.deliveryAddress?.street}, {trackingData.deliveryAddress?.city}, {trackingData.deliveryAddress?.zipCode}
+                        {userLocation ? 'Your current location' : `${trackingData.deliveryAddress?.street}, ${trackingData.deliveryAddress?.city}, ${trackingData.deliveryAddress?.zipCode}`}
                       </p>
                     </div>
                   </div>
@@ -201,14 +402,107 @@ function TrackingPage() {
 
               <div className="card overflow-hidden">
                 <div className="relative">
-                  <img
-                    src="https://images.pexels.com/photos/2882234/pexels-photo-2882234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Delivery location map"
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+                  <div className="absolute top-4 left-4 z-[1000]">
+                    <button
+                      onClick={getUserLocation}
+                      disabled={locationLoading}
+                      className="bg-white rounded-lg p-3 shadow-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      title="Get my location"
+                    >
+                      <Crosshair className={`h-5 w-5 ${locationLoading ? 'animate-spin' : ''}`} />
+                    </button>
+                  </div>
+
+                  {locationError && (
+                    <div className="absolute top-4 left-16 z-[1000]">
+                      <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded-lg text-sm">
+                        {locationError}
+                      </div>
+                    </div>
+                  )}
+
+                  {userLocation && (
+                    <div className="absolute top-4 left-16 z-[1000]">
+                      <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-2 rounded-lg text-sm">
+                        Location found!
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="h-96 w-full">
+                    <MapContainer
+                      center={deliveryLocation}
+                      zoom={13}
+                      className="h-full w-full"
+                      style={{ height: '400px', width: '100%' }}
+                    >
+                      <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      />
+                      
+                      {selectedRestaurant && (
+                        <Marker position={selectedRestaurant.location} icon={restaurantIcon}>
+                          <Popup>
+                            <div className="text-center">
+                              <h3 className="font-semibold text-orange-600">{selectedRestaurant.name}</h3>
+                              <p className="text-sm text-gray-600">{selectedRestaurant.cuisine}</p>
+                              <p className="text-xs text-gray-500">★ {selectedRestaurant.rating}</p>
+                            </div>
+                          </Popup>
+                        </Marker>
+                      )}
+                      
+                      <Marker position={deliveryLocation} icon={deliveryIcon}>
+                        <Popup>
+                          <div className="text-center">
+                            <h3 className="font-semibold text-red-600">Delivery Location</h3>
+                            <p className="text-sm text-gray-600">
+                              {userLocation ? 'Your current location' : 'Delivery address'}
+                            </p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                      
+                      <Marker position={driverPosition} icon={driverIcon}>
+                        <Popup>
+                          <div className="text-center">
+                            <h3 className="font-semibold text-blue-600">Driver Location</h3>
+                            <p className="text-sm text-gray-600">{trackingData.driver.name}</p>
+                            <p className="text-xs text-gray-500">{getRandomDriverLocation()}</p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                      
+                      {userLocation && (
+                        <Marker position={userLocation} icon={userLocationIcon}>
+                          <Popup>
+                            <div className="text-center">
+                              <h3 className="font-semibold text-green-600">Your Location</h3>
+                              <p className="text-sm text-gray-600">Current position</p>
+                            </div>
+                          </Popup>
+                        </Marker>
+                      )}
+                      
+                      {routePath.length > 0 && (
+                        <Polyline 
+                          positions={routePath}
+                          color="#3B82F6"
+                          weight={3}
+                          opacity={0.7}
+                        />
+                      )}
+                      
+                      <MapUpdater 
+                        driverPosition={driverPosition} 
+                        userLocation={userLocation} 
+                        restaurantLocation={selectedRestaurant?.location}
+                      />
+                    </MapContainer>
+                  </div>
                   
-                  <div className="absolute top-4 left-4 right-4">
+                  <div className="absolute top-4 right-4 z-[1000]">
                     <div className="bg-white rounded-lg p-3 shadow-lg">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -230,7 +524,7 @@ function TrackingPage() {
                     </div>
                   </div>
 
-                  <div className="absolute bottom-8 right-8">
+                  <div className="absolute bottom-8 right-8 z-[1000]">
                     <div className="bg-red-500 rounded-full p-3 shadow-lg animate-bounce">
                       <MapPin className="h-6 w-6 text-white" />
                     </div>
@@ -256,9 +550,11 @@ function TrackingPage() {
                   </div>
                   
                   <div className="flex space-x-3">
-                    <button className="bg-primary-500 text-white p-3 rounded-lg hover:bg-primary-600 transition-colors">
-                      <MessageCircle className="h-5 w-5" />
+                    <button 
+                      className="bg-primary-500 text-white p-3 rounded-lg hover:bg-primary-600 transition-colors"
                       onClick={() => setShowChat(true)}
+                    >
+                      <MessageCircle className="h-5 w-5" />
                     </button>
                     <a
                       href={`tel:${trackingData.driver.phone}`}
