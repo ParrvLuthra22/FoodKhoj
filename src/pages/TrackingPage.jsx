@@ -386,7 +386,7 @@ function TrackingPage() {
                     <p className="text-gray-600 mb-1">Order ID: {trackingData.id}</p>
                     <p className="text-gray-600 mb-1">Restaurant: {selectedRestaurant?.name || trackingData.restaurant?.name}</p>
                     <p className="text-gray-600 mb-1">Items: {trackingData.items?.map(item => item.name).join(', ')}</p>
-                    <p className="text-gray-600">Total: ${trackingData.total}</p>
+                    <p className="text-gray-600">Total: {trackingData.totalINR || `₹${Math.round(trackingData.total * 83)}`}</p>
                   </div>
                   <div>
                     <h3 className="font-semibold mb-2">Delivery Address</h3>

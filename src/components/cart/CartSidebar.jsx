@@ -3,6 +3,7 @@ import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { convertAndFormatUSDToINR } from '../../utils/currencyConverter';
 
 function CartSidebar({ isOpen, onClose, onCheckout }) {
   const { cart, updateQuantity, getTotalPrice, getTotalItems } = useCart();
@@ -13,8 +14,11 @@ function CartSidebar({ isOpen, onClose, onCheckout }) {
   };
 
   const deliveryFee = 2.99;
+  const deliveryFeeINR = convertAndFormatUSDToINR(deliveryFee);
   const subtotal = getTotalPrice();
+  const subtotalINR = convertAndFormatUSDToINR(subtotal);
   const total = subtotal + deliveryFee;
+  const totalINR = convertAndFormatUSDToINR(total);
 
   if (!isOpen) return null;
 
@@ -58,7 +62,7 @@ function CartSidebar({ isOpen, onClose, onCheckout }) {
                 <div key={item.id} className="flex items-center gap-3">
                   <div className="flex-1">
                     <h4 className="font-medium">{item.name}</h4>
-                    <p className="text-sm text-gray-600">${item.price.toFixed(2)} each</p>
+                    <p className="text-sm text-gray-600">{item.priceINR || `₹${Math.round(item.price * 83)}`} each</p>
                   </div>
                   
                   <div className="flex items-center gap-2">
@@ -78,7 +82,7 @@ function CartSidebar({ isOpen, onClose, onCheckout }) {
                   </div>
                   
                   <div className="text-right">
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">{item.priceINR ? `₹${Math.round(parseFloat(item.priceINR.replace('₹', '').replace(',', '')) * item.quantity)}` : `₹${Math.round(item.price * 83 * item.quantity)}`}</p>
                   </div>
                 </div>
               ))}
@@ -87,15 +91,15 @@ function CartSidebar({ isOpen, onClose, onCheckout }) {
             <div className="border-t border-gray-200 p-4 space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{subtotalINR}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery Fee</span>
-                <span>${deliveryFee.toFixed(2)}</span>
+                <span>{deliveryFeeINR}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t border-gray-200 pt-2">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{totalINR}</span>
               </div>
             </div>
 

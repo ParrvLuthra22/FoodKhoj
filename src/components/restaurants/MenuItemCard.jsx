@@ -2,22 +2,21 @@ import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 
-function MenuItemCard({ item, restaurantInfo }) {
+function MenuItemCard({ item }) {
   const { cart, addItem, updateQuantity } = useCart();
-  
+
   const cartItem = cart.items.find(cartItem => cartItem.id === item.id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = () => {
     addItem({
       ...item,
-      restaurantId: restaurantInfo.id,
-      restaurantName: restaurantInfo.name
+      priceINR: item.priceINR || `₹${Math.round(item.price * 83)}`
     });
   };
 
   const handleUpdateQuantity = (newQuantity) => {
-    if (newQuantity <= 0) {
+    if (newQuantity === 0) {
       updateQuantity(item.id, 0);
     } else {
       updateQuantity(item.id, newQuantity);
@@ -25,12 +24,17 @@ function MenuItemCard({ item, restaurantInfo }) {
   };
 
   return (
-    <div className="card p-4 flex gap-4">
+    <div className="card p-4 flex items-center gap-4">
       <div className="flex-1">
-        <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
-        <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+        <div className="flex items-start justify-between mb-2">
+          <div>
+            <h3 className="font-semibold text-lg">{item.name}</h3>
+            <p className="text-gray-600 text-sm">{item.description}</p>
+          </div>
+        </div>
+        
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-primary-500">${item.price.toFixed(2)}</span>
+          <span className="text-xl font-bold text-primary-500">{item.priceINR || `₹${Math.round(item.price * 83)}`}</span>
           
           {quantity === 0 ? (
             <button

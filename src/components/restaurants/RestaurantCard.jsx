@@ -43,7 +43,7 @@ function RestaurantCard({ restaurant }) {
         
         <div className="mt-3 pt-3 border-t border-gray-100">
           <p className="text-sm text-gray-600">
-            Delivery fee: <span className="font-medium">${restaurant.deliveryFee}</span>
+            Delivery fee: <span className="font-medium">{restaurant.deliveryFeeINR || `₹${Math.round(restaurant.deliveryFee * 83)}`}</span>
           </p>
         </div>
       </div>

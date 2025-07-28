@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, MapPin } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import RestaurantCard from '../components/restaurants/RestaurantCard';
+import { convertAndFormatUSDToINR } from '../utils/currencyConverter';
 
 function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState('all');
   const [sortBy, setSortBy] = useState('rating');
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Mock restaurant data - in a real app, this would come from Firebase
+  // Mock restaurant data with INR prices
   useEffect(() => {
     const mockRestaurants = [
       {
@@ -19,6 +22,7 @@ function RestaurantsPage() {
         deliveryTime: 25,
         distance: 1.2,
         deliveryFee: 2.99,
+        deliveryFeeINR: convertAndFormatUSDToINR(2.99),
         isOpen: true,
         image: 'https://content3.jdmagicbox.com/v2/comp/delhi/y3/011pxx11.xx11.210217145948.z1y3/catalogue/-s2g3167hz7.jpg'
       },
@@ -30,6 +34,7 @@ function RestaurantsPage() {
         deliveryTime: 30,
         distance: 2.1,
         deliveryFee: 3.49,
+        deliveryFeeINR: convertAndFormatUSDToINR(3.49),
         isOpen: true,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4ykWNVwwmdSeI3zcmb82qgS2UJCNMNYHwtw&s'
       },
@@ -41,6 +46,7 @@ function RestaurantsPage() {
         deliveryTime: 20,
         distance: 0.8,
         deliveryFee: 1.99,
+        deliveryFeeINR: convertAndFormatUSDToINR(1.99),
         isOpen: true,
         image: 'https://play-lh.googleusercontent.com/LajmY4cNQiCJ1xmLt-BoJjG-ChCmZncapS0KR2PzwB-8UeypsKMH4RYfw36xi-MXSj2b'
       },
@@ -52,36 +58,49 @@ function RestaurantsPage() {
         deliveryTime: 35,
         distance: 2.8,
         deliveryFee: 3.99,
+        deliveryFeeINR: convertAndFormatUSDToINR(3.99),
         isOpen: false,
         image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/72/7b/29/spice-hub.jpg?w=900&h=-1&s=1'
       },
       {
         id: '5',
-        name: 'Kogai Sushi',
-        cuisine: 'Japanese',
-        rating: 4.9,
-        deliveryTime: 40,
-        distance: 3.2,
-        deliveryFee: 4.49,
+        name: 'Khan Chacha',
+        cuisine: 'Kebabs & Rolls',
+        rating: 4.5,
+        deliveryTime: 28,
+        distance: 1.5,
+        deliveryFee: 2.50,
+        deliveryFeeINR: convertAndFormatUSDToINR(2.50),
         isOpen: true,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1nDd7b92TB2IN0ZLDXMdcmPkMoPckJ3fZpw&s'
+        image: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
       },
       {
         id: '6',
-        name: 'Taco Fiesta',
-        cuisine: 'Mexican',
+        name: 'Karim\'s',
+        cuisine: 'Mughlai',
         rating: 4.3,
-        deliveryTime: 25,
-        distance: 1.5,
-        deliveryFee: 2.49,
+        deliveryTime: 32,
+        distance: 2.3,
+        deliveryFee: 3.25,
+        deliveryFeeINR: convertAndFormatUSDToINR(3.25),
         isOpen: true,
-        image: 'https://menufyproduction.imgix.net/637206602385508287+157242.png?auto=compress,format&h=1080&w=1920&fit=max'
+        image: 'https://upload.wikimedia.org/wikipedia/commons/9/92/Karim%27s.jpg'
       }
     ];
     setRestaurants(mockRestaurants);
   }, []);
 
-  const cuisines = ['all', 'Italian', 'Chinese', 'American', 'Indian', 'Japanese', 'Mexican'];
+  // Handle search parameter from navbar
+  useEffect(() => {
+    const searchFromParams = searchParams.get('search');
+    if (searchFromParams) {
+      setSearchTerm(searchFromParams);
+      // Clear the search parameter from URL after setting it
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
+  const cuisines = ['all', 'Italian', 'Chinese', 'American', 'Indian', 'Kebabs & Rolls', 'Mughlai'];
 
   const filteredRestaurants = restaurants
     .filter(restaurant => 

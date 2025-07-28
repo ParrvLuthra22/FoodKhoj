@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MapPin, Menu, X, Search, ShoppingCart, User, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
@@ -13,8 +13,10 @@ function Navbar() {
   const [authMode, setAuthMode] = useState('login');
   const [showCartSidebar, setShowCartSidebar] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   
   const location = useLocation();
+  const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
   const { getTotalItems } = useCart();
 
@@ -61,6 +63,14 @@ function Navbar() {
     setShowCartSidebar(false);
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/restaurants?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm('');
+    }
+  };
+
   const totalItems = getTotalItems();
 
   return (
@@ -79,14 +89,16 @@ function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center max-w-md w-full mx-4 relative">
-            <div className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full">
               <input
                 type="text"
                 placeholder="Search for restaurants or food..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            </div>
+            </form>
           </div>
 
           <nav className="hidden md:flex items-center space-x-1">
@@ -185,14 +197,16 @@ function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 absolute top-full left-0 right-0 shadow-md">
             <div className="container mx-auto py-3">
-              <div className="relative mb-4">
+              <form onSubmit={handleSearch} className="relative mb-4">
                 <input
                   type="text"
                   placeholder="Search for restaurants or food..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full py-2 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
                 <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              </div>
+              </form>
 
               <nav className="flex flex-col space-y-1">
                 {navLinks.map((link) => (

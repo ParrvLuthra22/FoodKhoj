@@ -4,6 +4,7 @@ import { MapPin, CreditCard, Clock, CheckCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { createOrder } from '../services/orderService';
+import { convertAndFormatUSDToINR } from '../utils/currencyConverter';
 
 function CheckoutPage() {
   const navigate = useNavigate();
@@ -27,9 +28,13 @@ function CheckoutPage() {
   });
 
   const deliveryFee = 2.99;
+  const deliveryFeeINR = convertAndFormatUSDToINR(deliveryFee);
   const subtotal = getTotalPrice();
-  const tax = subtotal * 0.08; 
+  const subtotalINR = convertAndFormatUSDToINR(subtotal);
+  const tax = subtotal * 0.08;
+  const taxINR = convertAndFormatUSDToINR(tax);
   const total = subtotal + deliveryFee + tax;
+  const totalINR = convertAndFormatUSDToINR(total);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,9 +56,11 @@ function CheckoutPage() {
           id: item.id,
           name: item.name,
           price: item.price,
+          priceINR: item.priceINR,
           quantity: item.quantity
         })),
         total: total.toFixed(2),
+        totalINR: totalINR,
         deliveryAddress: deliveryAddress,
         paymentMethod: paymentMethod,
         status: 'confirmed',
@@ -127,7 +134,7 @@ function CheckoutPage() {
                   />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       City
@@ -137,7 +144,7 @@ function CheckoutPage() {
                       value={deliveryAddress.city}
                       onChange={(e) => setDeliveryAddress({...deliveryAddress, city: e.target.value})}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="New York"
+                      placeholder="New Delhi"
                       required
                     />
                   </div>
@@ -151,7 +158,7 @@ function CheckoutPage() {
                       value={deliveryAddress.zipCode}
                       onChange={(e) => setDeliveryAddress({...deliveryAddress, zipCode: e.target.value})}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="10001"
+                      placeholder="110034"
                       required
                     />
                   </div>
@@ -193,7 +200,7 @@ function CheckoutPage() {
                   />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Expiry Date
@@ -221,20 +228,20 @@ function CheckoutPage() {
                       required
                     />
                   </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name on Card
-                  </label>
-                  <input
-                    type="text"
-                    value={paymentMethod.nameOnCard}
-                    onChange={(e) => setPaymentMethod({...paymentMethod, nameOnCard: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="John Doe"
-                    required
-                  />
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Name on Card
+                    </label>
+                    <input
+                      type="text"
+                      value={paymentMethod.nameOnCard}
+                      onChange={(e) => setPaymentMethod({...paymentMethod, nameOnCard: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
                 </div>
               </form>
             </div>
@@ -261,7 +268,7 @@ function CheckoutPage() {
                       <p className="font-medium">{item.name}</p>
                       <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                     </div>
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">{item.priceINR || `₹${Math.round(item.price * 83 * item.quantity)}`}</p>
                   </div>
                 ))}
               </div>
@@ -269,19 +276,19 @@ function CheckoutPage() {
               <div className="border-t border-gray-200 pt-4 space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{subtotalINR}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Delivery Fee</span>
-                  <span>${deliveryFee.toFixed(2)}</span>
+                  <span>{deliveryFeeINR}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{taxINR}</span>
                 </div>
                 <div className="flex justify-between font-semibold text-lg border-t border-gray-200 pt-2">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{totalINR}</span>
                 </div>
               </div>
 
@@ -290,7 +297,7 @@ function CheckoutPage() {
                 disabled={loading}
                 className="w-full btn btn-primary py-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Processing Order...' : `Place Order - $${total.toFixed(2)}`}
+                {loading ? 'Processing Order...' : `Place Order - ${totalINR}`}
               </button>
             </div>
           </div>
