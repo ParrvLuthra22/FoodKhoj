@@ -290,12 +290,12 @@ function TrackingPage() {
 
   const getRandomDriverLocation = () => {
     const locations = [
-      'Currently at Main Street intersection',
-      'Heading north on Oak Avenue',
-      'Turning onto your street',
-      'Approaching your building',
-      'Looking for parking'
-    ];
+  'Currently at Connaught Place outer circle',
+  'Heading south on Barakhamba Road',
+  'Turning onto Kasturba Gandhi Marg',
+  'Approaching your block near India Gate',
+  'Looking for parking near the complex'
+];
     return locations[Math.floor(Math.random() * locations.length)];
   };
 

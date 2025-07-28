@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, MessageCircle, User, Clock } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { demoDB } from '../../config/firebase';
 import { ref, push, onValue, off, serverTimestamp } from 'firebase/database';
 import { database } from '../../config/firebase';
 
@@ -14,37 +15,67 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
 
   const chatId = `order_${orderId}`;
 
+  const driverResponses = [
+    "I'm about 5 minutes away from your location.",
+    "I've just picked up your order from the restaurant.",
+    "I'm on my way to your address now.",
+    "I'll ring the bell when I arrive.",
+    "I'll leave it at the door as requested.",
+    "I'm currently at the traffic signal, will be there soon.",
+    "Your order is ready and I'm heading your way.",
+    "I'll call you when I'm near your building."
+  ];
+
+  const simulateDriverResponse = async (userMessage) => {
+    setIsTyping(true);
+
+
+    await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+    
+    let response = driverResponses[Math.floor(Math.random() * driverResponses.length)];
+    
+    if (userMessage.toLowerCase().includes('close') || userMessage.toLowerCase().includes('where')) {
+      response = "I'm about 5 minutes away from your location.";
+    } else if (userMessage.toLowerCase().includes('ring') || userMessage.toLowerCase().includes('bell')) {
+      response = "I'll ring the bell when I arrive.";
+    } else if (userMessage.toLowerCase().includes('door') || userMessage.toLowerCase().includes('leave')) {
+      response = "I'll leave it at the door as requested.";
+    }
+    
+    const driverMessage = {
+      id: Date.now().toString(),
+      text: response,
+      senderId: 'driver',
+      senderName: driverInfo?.name || 'Driver',
+      senderType: 'driver',
+      timestamp: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    
+    setMessages(prev => [...prev, driverMessage]);
+    setIsTyping(false);
+  };
+
   useEffect(() => {
     if (!isOpen || !orderId || !currentUser) return;
 
-    const messagesRef = ref(database, `chats/${chatId}/messages`);
-    
-    const unsubscribe = onValue(messagesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const messagesList = Object.entries(data).map(([key, value]) => ({
-          id: key,
-          ...value
-        })).sort((a, b) => a.timestamp - b.timestamp);
-        setMessages(messagesList);
-      } else {
-        setMessages([]);
-      }
-    });
-
-    const typingRef = ref(database, `chats/${chatId}/typing`);
-    const typingUnsubscribe = onValue(typingRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data && data.userId !== currentUser.uid) {
-        setIsTyping(data.isTyping);
-      }
-    });
-
-    return () => {
-      off(messagesRef);
-      off(typingRef);
-    };
-  }, [isOpen, orderId, currentUser, chatId]);
+    const savedMessages = localStorage.getItem(`chat_${chatId}`);
+    if (savedMessages) {
+      setMessages(JSON.parse(savedMessages));
+    } else {
+      const welcomeMessage = {
+        id: Date.now().toString(),
+        text: `Hi! I'm ${driverInfo?.name || 'your driver'}. I'll be delivering your order #${orderId}. How can I help you?`,
+        senderId: 'driver',
+        senderName: driverInfo?.name || 'Driver',
+        senderType: 'driver',
+        timestamp: Date.now(),
+        createdAt: new Date().toISOString()
+      };
+      setMessages([welcomeMessage]);
+      localStorage.setItem(`chat_${chatId}`, JSON.stringify([welcomeMessage]));
+    }
+  }, [isOpen, orderId, currentUser, chatId, driverInfo]);
 
   useEffect(() => {
     scrollToBottom();
@@ -60,17 +91,26 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
 
     setLoading(true);
     try {
-      const messagesRef = ref(database, `chats/${chatId}/messages`);
-      await push(messagesRef, {
+      const userMessage = {
+        id: Date.now().toString(),
         text: newMessage.trim(),
         senderId: currentUser.uid,
         senderName: currentUser.displayName || 'Customer',
         senderType: 'customer',
-        timestamp: serverTimestamp(),
+        timestamp: Date.now(),
         createdAt: new Date().toISOString()
-      });
+      };
 
+      const updatedMessages = [...messages, userMessage];
+      setMessages(updatedMessages);
+      localStorage.setItem(`chat_${chatId}`, JSON.stringify(updatedMessages));
+      
       setNewMessage('');
+      
+      setTimeout(() => {
+        simulateDriverResponse(newMessage.trim());
+      }, 1000);
+      
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
@@ -78,24 +118,8 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
     }
   };
 
-  const updateTypingStatus = (isTyping) => {
-    if (!currentUser) return;
-    
-    const typingRef = ref(database, `chats/${chatId}/typing`);
-    push(typingRef, {
-      userId: currentUser.uid,
-      isTyping,
-      timestamp: serverTimestamp()
-    });
-  };
-
   const handleInputChange = (e) => {
     setNewMessage(e.target.value);
-    updateTypingStatus(true);
-    
-    setTimeout(() => {
-      updateTypingStatus(false);
-    }, 2000);
   };
 
   const formatTime = (timestamp) => {
