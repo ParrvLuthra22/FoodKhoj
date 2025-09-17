@@ -48,7 +48,7 @@ function HeroSection() {
 
           <div className="rounded-2xl overflow-hidden shadow-medium relative animate-float">
             <img
-              src="https://lh3.googleusercontent.com/rd-gg-dl/AJfQ9KTPFVx05x4VyeJeB0GLMUP8WZEWSYdDpfpQEZdO_irup_ZqTSTKTA-c-gzuwNH-hrmBih1yRKxWt1cA4_lNexN5cl_N6E5t47-Sws_F7KD3h7mQXP893qYKHLacG_XEqEiIhryFxj6fjynvOeptGTu_mQQAZ-FXqVk6OuUjWQNeGAPL221OthW8oavqViMLTuct7FTPyr80AX2ktaz5rDt9ozhcv5HR4VFqU-L10Lvs6D2VO05AcUocJMp8H1GLyVy9p7UBRQqxrqXV8GKulJMDNxZn_trFsmQVOVmhMXC2iu6xvWB7noQDjzoqwbl18Ijpnmjgy3sJtqqJiC-6a3uEFB8-Lrh4KrkM0BlxBI4bzK6APzSWAQs2B63MONJP1RRnmaYM5NWK-yosziep9JoQNlHxSz2qVaCMFo0uJcmR85p5J8rhmNW4y0PbB1U0N8-EA-7nB9CuDvk_9ivp3rkscwHDXtdGAe_9ecxiZCO9_ICe0kcxgWL_vjEfE2O27YvL6dEAnq7DB-zhMljTK3dQTUAF5iBhq5Tv3XRfceUUpeEnLbum43GEoijR9ZxklI3asRNZwV51IW7FI3YuC1D7_OuTCCQz-YthQ2VZOVN8lP8H3j8nw6bpifsHdPm9iZAry1me14slkWYrQujj3Uh_nQtwwvZzV7FS1DsYUqwsJLj6nh42qZQbzWbSsN0vKB472-O1Dzkd9SbNNpZqf4293_5_OKacLSmm-7Nq38nFK_0eF9DuJXEbhEYpSi64llXxsY32-s6mIVXuzJ3pJ5u83RrdFil7I1PpEKSDD9Qmvz-iwyA8MIOuCZoyf_Ctq-nvnVduYFD3-D-dPzni-O-Sverplij9notoys1tlWDIYXBZaqt5_MhzgA9TsFvoE5nFt15IRPlT-_wYMfXAbmeFMeJV_IP_zAbcQodjJKDkDJDv7bFrK_yh94kybEFKntrzR3Xvd-YAAid5MmiDZNs4LFfZRDrZ9mYkbacPxvjYNBJ_QxAXsZxEBprBhNfFqwZjHmq-8k6_mWPkr_KqLG55DDkyeFOrAtoGp0SpdnwnDsdHOzqLHYvqfLrRTZKt0bfawoDv_bg1LTxT-MmB-EChzmXz8_wadW5AkQk5Ev-iPQCbUhuYiIW-_uAHTczmKFqbA1jg7PB0EWNYyGdPLAN-h5GYcxJFy8HmMA=s1024"
+              src="./Gemini_Generated_Image_sly6essly6essly6.png"
               alt="Food delivery tracking"
               className="w-full h-auto rounded-2xl"
             />
