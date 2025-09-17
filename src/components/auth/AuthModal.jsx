@@ -12,7 +12,7 @@ function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login, signup } = useAuth();
+  const { login, signup, loginWithGoogle } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -197,6 +197,33 @@ function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
             {loading ? 'Please wait...' : (mode === 'login' ? 'Sign In' : 'Create Account')}
           </button>
         </form>
+
+        <div className="my-4 flex items-center">
+          <div className="flex-1 h-px bg-gray-200" />
+          <span className="px-3 text-xs text-gray-400">OR</span>
+          <div className="flex-1 h-px bg-gray-200" />
+        </div>
+
+        <button
+          type="button"
+          disabled={loading}
+          onClick={async () => {
+            setError('');
+            setLoading(true);
+            try {
+              await loginWithGoogle();
+              onClose();
+              resetForm();
+            } catch (e) {
+              setError(e.message || 'Google sign-in failed');
+            } finally {
+              setLoading(false);
+            }
+          }}
+          className="w-full py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Continue with Google
+        </button>
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
