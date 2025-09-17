@@ -48,7 +48,7 @@ function HeroSection() {
 
           <div className="rounded-2xl overflow-hidden shadow-medium relative animate-float">
             <img
-              src="./Gemini_Generated_Image_sly6essly6essly6.png"
+              src="/Gemini_Generated_Image_sly6essly6essly6.png"
               alt="Food delivery tracking"
               className="w-full h-auto rounded-2xl"
             />
