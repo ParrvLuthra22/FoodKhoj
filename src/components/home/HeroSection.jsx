@@ -7,14 +7,14 @@ function HeroSection() {
     <section className="pt-28 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="fade-in">
+          <div className="fade-in text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               Order Food & <span className="text-primary-500">Track Delivery</span> in Real-Time
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-lg">
+            <p className="text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">
               Browse menus from local restaurants, place your order, and watch your food journey to your doorstep with live tracking.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
               <Link to="/restaurants" className="btn btn-primary text-base px-6 py-3">
                 <MapPin className="mr-2 h-5 w-5" />
                 Order Now
@@ -24,7 +24,7 @@ function HeroSection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
               <div className="flex items-center">
                 <div className="bg-secondary-500 p-2 rounded-full mr-3">
                   <Clock className="h-5 w-5 text-white" />

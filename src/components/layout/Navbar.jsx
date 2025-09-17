@@ -63,14 +63,6 @@ function Navbar() {
     setShowCartSidebar(false);
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/restaurants?search=${encodeURIComponent(searchTerm.trim())}`);
-      setSearchTerm('');
-    }
-  };
-
   const totalItems = getTotalItems();
 
   return (
@@ -87,19 +79,6 @@ function Navbar() {
               Food<span className="text-primary-500">Khoj</span>
             </span>
           </Link>
-
-          <div className="hidden md:flex items-center max-w-md w-full mx-4 relative">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search for restaurants or food..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full py-2 pl-10 pr-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-            </form>
-          </div>
 
           <nav className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
@@ -197,17 +176,6 @@ function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 absolute top-full left-0 right-0 shadow-md">
             <div className="container mx-auto py-3">
-              <form onSubmit={handleSearch} className="relative mb-4">
-                <input
-                  type="text"
-                  placeholder="Search for restaurants or food..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full py-2 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-                <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              </form>
-
               <nav className="flex flex-col space-y-1">
                 {navLinks.map((link) => (
                   <Link

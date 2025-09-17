@@ -49,8 +49,9 @@ function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
     setShowPassword(false);
   };
 
-  const switchMode = () => {
-    setMode(mode === 'login' ? 'signup' : 'login');
+  const switchMode = (nextMode) => {
+    const finalMode = typeof nextMode === 'string' ? nextMode : (mode === 'login' ? 'signup' : 'login');
+    setMode(finalMode);
     setError('');
   };
 
@@ -66,8 +67,32 @@ function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
           <X className="h-6 w-6" />
         </button>
 
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        {/* Mode Toggle */}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex items-center rounded-full bg-gray-100 p-1">
+            <button
+              type="button"
+              onClick={() => switchMode('login')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                mode === 'login' ? 'bg-white text-gray-900 shadow' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => switchMode('signup')}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                mode === 'signup' ? 'bg-white text-gray-900 shadow' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+
+        <div className="text-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">
             {mode === 'login' ? 'Welcome Back' : 'Create Account'}
           </h2>
           <p className="text-gray-600">
@@ -177,7 +202,7 @@ function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
           <p className="text-gray-600">
             {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
             <button
-              onClick={switchMode}
+              onClick={() => switchMode()}
               className="text-primary-500 font-medium hover:text-primary-600"
             >
               {mode === 'login' ? 'Sign up' : 'Sign in'}

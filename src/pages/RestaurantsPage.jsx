@@ -84,18 +84,17 @@ function RestaurantsPage() {
         deliveryFee: 3.25,
         deliveryFeeINR: convertAndFormatUSDToINR(3.25),
         isOpen: true,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/9/92/Karim%27s.jpg'
+        image: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
       }
     ];
     setRestaurants(mockRestaurants);
   }, []);
 
-  // Handle search parameter from navbar
+  // Handle search parameter from navbar (kept for deep-link support, but no UI)
   useEffect(() => {
     const searchFromParams = searchParams.get('search');
     if (searchFromParams) {
       setSearchTerm(searchFromParams);
-      // Clear the search parameter from URL after setting it
       setSearchParams({}, { replace: true });
     }
   }, [searchParams, setSearchParams]);
@@ -139,20 +138,9 @@ function RestaurantsPage() {
             </p>
           </div>
 
-          {/* Search and Filters */}
+          {/* Filters (search removed) */}
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="md:col-span-2 relative">
-                <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search restaurants or cuisines..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-              </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
                 <Filter className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <select
@@ -201,7 +189,7 @@ function RestaurantsPage() {
           {filteredRestaurants.length === 0 ? (
             <div className="text-center py-12">
               <h3 className="text-xl font-medium text-gray-900 mb-2">No restaurants found</h3>
-              <p className="text-gray-600">Try adjusting your search or filters</p>
+              <p className="text-gray-600">Try adjusting your filters</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -27,7 +27,7 @@ function TrackingPreview() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div className="card p-6 md:p-8">
-            <div className="mb-6">
+            <div className="mb-6 text-center lg:text-left">
               <h3 className="text-2xl font-bold mb-2">Track Your Order</h3>
               <p className="text-gray-600">
                 Enter your order ID to see real-time location and status updates.
@@ -78,7 +78,7 @@ function TrackingPreview() {
               </div>
               <Link 
                 to="/services" 
-                className="flex items-center justify-center text-primary-500 font-medium mt-6 hover:text-primary-600 transition-colors"
+                className="flex items-center justify-center lg:justify-start text-primary-500 font-medium mt-6 hover:text-primary-600 transition-colors"
               >
                 Learn more about our tracking service
                 <ArrowUpRight className="ml-1 h-4 w-4" />
