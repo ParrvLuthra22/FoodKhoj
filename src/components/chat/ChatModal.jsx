@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Send, MessageCircle, User, Clock } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { generateDriverReply } from '../../services/geminiService';
@@ -116,8 +117,8 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  const modalContent = (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000] p-4">
       <div className="bg-white rounded-xl max-w-md w-full h-[600px] flex flex-col">
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <div className="flex items-center">
@@ -255,6 +256,8 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 export default ChatModal;

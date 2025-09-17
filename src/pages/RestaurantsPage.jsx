@@ -138,8 +138,20 @@ function RestaurantsPage() {
             </p>
           </div>
 
-          {/* Filters (search removed) */}
+          {/* Search + Filters */}
           <div className="max-w-4xl mx-auto">
+            {/* Search */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search for dishes or restaurants"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
                 <Filter className="absolute left-3 top-3 h-5 w-5 text-gray-400" />

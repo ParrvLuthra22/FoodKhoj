@@ -35,8 +35,8 @@ function MapComponent() {
   }, [deliveryProgress]);
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg h-[400px] border border-gray-200 overflow-hidden">
-      <div className="bg-white border-b border-gray-200 p-4">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg h-[50vh] min-h-[350px] max-h-[500px] border border-gray-200 overflow-hidden flex flex-col">
+      <div className="bg-white border-b border-gray-200 p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="bg-primary-500 rounded-full p-2 mr-3">
@@ -56,7 +56,7 @@ function MapComponent() {
         </div>
       </div>
 
-      <div className="relative h-64 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+      <div className="relative flex-1 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="grid grid-cols-8 grid-rows-6 h-full">
             {Array.from({ length: 48 }).map((_, i) => (
@@ -133,7 +133,7 @@ function MapComponent() {
         </div>
       </div>
 
-      <div className="p-4 bg-white">
+      <div className="p-4 bg-white flex-shrink-0">
         <div className="flex items-center justify-between text-sm">
           {deliverySteps.map((step, index) => (
             <div key={step.id} className="flex flex-col items-center flex-1">
@@ -155,7 +155,7 @@ function MapComponent() {
         </div>
       </div>
 
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 flex-shrink-0">
         <div className="bg-gray-50 rounded-lg p-3 flex items-center justify-between">
           <div className="flex items-center">
             <Clock className="h-4 w-4 text-gray-500 mr-2" />
