@@ -13,6 +13,7 @@ import OrdersPage from './pages/OrdersPage';
 import TrackingPage from './pages/TrackingPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from './components/layout/Layout';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="restaurant/:id" element={<RestaurantDetailPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="orders" element={<OrdersPage />} />
+              <Route path="profile" element={<ProfilePage />} />
               <Route path="track" element={<TrackingPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
