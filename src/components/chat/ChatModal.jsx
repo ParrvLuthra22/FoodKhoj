@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, MessageCircle, User, Clock } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { demoDB } from '../../config/firebase';
-import { ref, push, onValue, off, serverTimestamp } from 'firebase/database';
-import { database } from '../../config/firebase';
+import { generateDriverReply } from '../../services/geminiService';
 
 function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
   const [messages, setMessages] = useState([]);
@@ -15,45 +13,35 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
 
   const chatId = `order_${orderId}`;
 
-  const driverResponses = [
-    "I'm about 5 minutes away from your location.",
-    "I've just picked up your order from the restaurant.",
-    "I'm on my way to your address now.",
-    "I'll ring the bell when I arrive.",
-    "I'll leave it at the door as requested.",
-    "I'm currently at the traffic signal, will be there soon.",
-    "Your order is ready and I'm heading your way.",
-    "I'll call you when I'm near your building."
-  ];
-
   const simulateDriverResponse = async (userMessage) => {
     setIsTyping(true);
-
-
-    await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
-    
-    let response = driverResponses[Math.floor(Math.random() * driverResponses.length)];
-    
-    if (userMessage.toLowerCase().includes('close') || userMessage.toLowerCase().includes('where')) {
-      response = "I'm about 5 minutes away from your location.";
-    } else if (userMessage.toLowerCase().includes('ring') || userMessage.toLowerCase().includes('bell')) {
-      response = "I'll ring the bell when I arrive.";
-    } else if (userMessage.toLowerCase().includes('door') || userMessage.toLowerCase().includes('leave')) {
-      response = "I'll leave it at the door as requested.";
+    try {
+      // Brief typing delay for realism
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const responseText = await generateDriverReply({
+        userMessage,
+        orderId,
+        driverInfo
+      });
+      const driverMessage = {
+        id: Date.now().toString(),
+        text: responseText,
+        senderId: 'driver',
+        senderName: driverInfo?.name || 'Driver',
+        senderType: 'driver',
+        timestamp: Date.now(),
+        createdAt: new Date().toISOString()
+      };
+      setMessages(prev => {
+        const next = [...prev, driverMessage];
+        localStorage.setItem(`chat_${chatId}`, JSON.stringify(next));
+        return next;
+      });
+    } catch (err) {
+      console.error('AI reply error:', err);
+    } finally {
+      setIsTyping(false);
     }
-    
-    const driverMessage = {
-      id: Date.now().toString(),
-      text: response,
-      senderId: 'driver',
-      senderName: driverInfo?.name || 'Driver',
-      senderType: 'driver',
-      timestamp: Date.now(),
-      createdAt: new Date().toISOString()
-    };
-    
-    setMessages(prev => [...prev, driverMessage]);
-    setIsTyping(false);
   };
 
   useEffect(() => {
@@ -106,10 +94,8 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
       localStorage.setItem(`chat_${chatId}`, JSON.stringify(updatedMessages));
       
       setNewMessage('');
-      
-      setTimeout(() => {
-        simulateDriverResponse(newMessage.trim());
-      }, 1000);
+      // Trigger AI reply
+      simulateDriverResponse(newMessage.trim());
       
     } catch (error) {
       console.error('Error sending message:', error);
