@@ -191,7 +191,7 @@ function TrackingPage() {
     const trackingIdFromUrl = urlParams.get('id');
     if (trackingIdFromUrl) {
       setOrderId(trackingIdFromUrl);
-      handleTrackOrderById(trackingIdFromUrl);
+      // Don't automatically start tracking - let user click the track button
     }
   }, [location]);
 
@@ -220,13 +220,8 @@ function TrackingPage() {
           setRoutePath(route);
         }
 
+        // Start driver movement simulation when user manually tracks
         simulateDriverMovement();
-
-        if (location.search.includes('id=')) {
-          setTimeout(() => {
-            alert(`Order placed successfully! Your tracking ID is: ${trackingId}`);
-          }, 500);
-        }
       } else {
         setTrackingData(null);
       }
@@ -330,6 +325,9 @@ function TrackingPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 mb-2">
                 Enter your order ID from checkout to track your delivery
+              </p>
+              <p className="text-xs text-gray-500">
+                Live tracking will only start after you enter a valid order ID
               </p>
             </div>
           </div>

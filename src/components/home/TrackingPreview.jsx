@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Search, MapPin, Clock, ArrowUpRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MapComponent from '../shared/MapComponent';
 
 function TrackingPreview() {
   const [orderId, setOrderId] = useState('');
+  const navigate = useNavigate();
 
   const handleTrackOrder = (e) => {
     e.preventDefault();
-    console.log('Tracking order:', orderId);
+    if (!orderId.trim()) return;
+    
+    // Navigate to tracking page with the order ID
+    navigate(`/track?id=${orderId.toUpperCase()}`);
   };
 
   const deliveryStatus = 'on the way';

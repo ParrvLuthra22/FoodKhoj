@@ -4,7 +4,7 @@ import { Star, Clock, MapPin, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MenuItemCard from '../components/restaurants/MenuItemCard';
 import { useCart } from '../contexts/CartContext';
-import { convertAndFormatUSDToINR } from '../utils/currencyConverter';
+import { getRestaurantById, getMenuItemsByRestaurantId } from '../data/mockData';
 
 function RestaurantDetailPage() {
   const { id } = useParams();
@@ -14,97 +14,21 @@ function RestaurantDetailPage() {
   const { setRestaurant: setCartRestaurant } = useCart();
 
   useEffect(() => {
-    const mockRestaurant = {
-      id: id,
-      name: 'Billus Hut',
-      cuisine: 'Italian',
-      rating: 4.8,
-      deliveryTime: 25,
-      distance: 1.2,
-      deliveryFee: 2.99,
-      deliveryFeeINR: convertAndFormatUSDToINR(2.99),
-      isOpen: true,
-      image: 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      description: 'Authentic Italian cuisine with fresh ingredients and traditional recipes passed down through generations.',
-      address: '213 NSP, Pitampura, New Delhi, Delhi 110034',
-      phone: '11032343'
-    };
-
-    const mockMenu = [
-      {
-        id: '1',
-        name: 'White Sauce Pasta',
-        description: 'Creamy white sauce pasta with parmesan cheese',
-        price: 12.99,
-        priceINR: convertAndFormatUSDToINR(12.99),
-        category: 'Pasta',
-        image: 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: true,
-        isSpicy: false
-      },
-      {
-        id: '2',
-        name: 'Margherita Pizza',
-        description: 'Classic pizza with tomato sauce, mozzarella, and basil',
-        price: 15.99,
-        priceINR: convertAndFormatUSDToINR(15.99),
-        category: 'Pizza',
-        image: 'https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: true,
-        isSpicy: false
-      },
-      {
-        id: '3',
-        name: 'Caesar Salad',
-        description: 'Fresh romaine lettuce with caesar dressing and croutons',
-        price: 8.99,
-        priceINR: convertAndFormatUSDToINR(8.99),
-        category: 'Salad',
-        image: 'https://images.pexels.com/photos/1213710/pexels-photo-1213710.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: true,
-        isSpicy: false
-      },
-      {
-        id: '4',
-        name: 'Chicken Alfredo',
-        description: 'Fettuccine pasta with creamy alfredo sauce and grilled chicken',
-        price: 18.99,
-        priceINR: convertAndFormatUSDToINR(18.99),
-        category: 'Pasta',
-        image: 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: false,
-        isSpicy: false
-      },
-      {
-        id: '5',
-        name: 'Pepperoni Pizza',
-        description: 'Spicy pepperoni pizza with melted cheese',
-        price: 16.99,
-        priceINR: convertAndFormatUSDToINR(16.99),
-        category: 'Pizza',
-        image: 'https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: false,
-        isSpicy: true
-      },
-      {
-        id: '6',
-        name: 'Garlic Bread',
-        description: 'Toasted bread with garlic butter and herbs',
-        price: 4.99,
-        priceINR: convertAndFormatUSDToINR(4.99),
-        category: 'Appetizer',
-        image: 'https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        isVegetarian: true,
-        isSpicy: false
-      }
-    ];
-
-    setRestaurant(mockRestaurant);
-    setMenu(mockMenu);
-    setCartRestaurant(mockRestaurant);
+    const restaurantData = getRestaurantById(id);
+    const menuData = getMenuItemsByRestaurantId(id);
+    
+    if (restaurantData) {
+      setRestaurant(restaurantData);
+      setCartRestaurant(restaurantData);
+    }
+    
+    if (menuData) {
+      setMenu(menuData);
+    }
   }, [id, setCartRestaurant]);
 
-  const categories = ['all', 'Pizza', 'Pasta', 'Salad', 'Appetizer'];
+  // Get unique categories from menu items
+  const categories = ['all', ...new Set(menu.map(item => item.category))];
 
   const filteredMenu = menu.filter(item => 
     selectedCategory === 'all' || item.category === selectedCategory
