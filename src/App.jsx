@@ -18,8 +18,13 @@ import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
+
     <AuthProvider>
       <CartProvider>
+                       <div>
+      {/* ... */}
+      <SpeedInsights />
+    </div>
         <Router>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -34,10 +39,6 @@ function App() {
               <Route path="profile" element={<ProfilePage />} />
               <Route path="track" element={<TrackingPage />} />
               <Route path="*" element={<NotFoundPage />} />
-               <div>
-      {/* ... */}
-      <SpeedInsights />
-    </div>
             </Route>
           </Routes>
         </Router>
