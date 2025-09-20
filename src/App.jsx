@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
@@ -33,6 +34,10 @@ function App() {
               <Route path="profile" element={<ProfilePage />} />
               <Route path="track" element={<TrackingPage />} />
               <Route path="*" element={<NotFoundPage />} />
+               <div>
+      {/* ... */}
+      <SpeedInsights />
+    </div>
             </Route>
           </Routes>
         </Router>
@@ -40,5 +45,6 @@ function App() {
     </AuthProvider>
   );
 }
+
 
 export default App;
