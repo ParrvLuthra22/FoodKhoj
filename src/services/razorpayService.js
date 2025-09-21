@@ -11,12 +11,12 @@ export class RazorpayService {
       script.async = true;
       
       script.onload = () => {
-        console.log('✅ Razorpay script loaded successfully');
+        console.log('Razorpay script loaded successfully');
         resolve(true);
       };
       
       script.onerror = () => {
-        console.error('❌ Failed to load Razorpay script');
+        console.error('Failed to load Razorpay script');
         reject(new Error('Failed to load Razorpay script'));
       };
 
@@ -32,12 +32,12 @@ export class RazorpayService {
         const razorpay = new window.Razorpay({
           ...options,
           handler: (response) => {
-            console.log('✅ Payment successful:', response);
+            console.log('Payment successful:', response);
             resolve(response);
           },
           modal: {
             ondismiss: () => {
-              console.log('❌ Payment modal dismissed');
+              console.log('Payment modal dismissed');
               reject(new Error('Payment cancelled by user'));
             },
           },
@@ -53,9 +53,9 @@ export class RazorpayService {
 
   static async processPayment(orderData) {
     try {
-      console.log('🔄 Processing payment for order:', orderData.id);
-      console.log('💰 Amount:', orderData.total);
-      console.log('🔑 Razorpay Key:', import.meta.env.VITE_RAZORPAY_KEY_ID);
+      console.log('Processing payment for order:', orderData.id);
+      console.log('Amount:', orderData.total);
+      console.log('Razorpay Key:', import.meta.env.VITE_RAZORPAY_KEY_ID);
 
       const amountInPaisa = Math.round(orderData.total * 83 * 100); 
       
@@ -81,12 +81,12 @@ export class RazorpayService {
         },
         modal: {
           ondismiss: function() {
-            console.log('❌ Payment modal dismissed');
+            console.log('Payment modal dismissed');
           }
         }
       };
 
-      console.log('🔄 Opening Razorpay checkout with options:', checkoutOptions);
+      console.log('Opening Razorpay checkout with options:', checkoutOptions);
       
       const paymentResponse = await this.openCheckout(checkoutOptions);
 
@@ -110,7 +110,7 @@ export class RazorpayService {
       };
 
     } catch (error) {
-      console.error('❌ Payment process failed:', error);
+      console.error('Payment process failed:', error);
       throw error;
     }
   }
