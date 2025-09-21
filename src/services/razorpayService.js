@@ -1,12 +1,6 @@
-// Simple Razorpay service for frontend-only integration
-
 export class RazorpayService {
-  /**
-   * Load Razorpay script dynamically
-   */
   static loadRazorpayScript() {
     return new Promise((resolve, reject) => {
-      // Check if script is already loaded
       if (window.Razorpay) {
         resolve(true);
         return;
@@ -30,12 +24,8 @@ export class RazorpayService {
     });
   }
 
-  /**
-   * Open Razorpay checkout modal
-   */
   static async openCheckout(options) {
     try {
-      // Ensure Razorpay script is loaded
       await this.loadRazorpayScript();
 
       return new Promise((resolve, reject) => {
@@ -61,22 +51,15 @@ export class RazorpayService {
     }
   }
 
-  /**
-   * Process payment (frontend-only for testing)
-   */
   static async processPayment(orderData) {
     try {
       console.log('🔄 Processing payment for order:', orderData.id);
       console.log('💰 Amount:', orderData.total);
       console.log('🔑 Razorpay Key:', import.meta.env.VITE_RAZORPAY_KEY_ID);
 
-      // Convert amount to paisa (smallest currency unit)
-      const amountInPaisa = Math.round(orderData.total * 83 * 100); // Convert USD to INR to Paisa
+      const amountInPaisa = Math.round(orderData.total * 83 * 100); 
       
       console.log('💰 Amount in Paisa:', amountInPaisa);
-
-      // For frontend-only testing, we don't create a server order
-      // We'll use Razorpay's payment-only mode
       const checkoutOptions = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amountInPaisa,
@@ -105,12 +88,10 @@ export class RazorpayService {
 
       console.log('🔄 Opening Razorpay checkout with options:', checkoutOptions);
       
-      // Open Razorpay checkout
       const paymentResponse = await this.openCheckout(checkoutOptions);
 
       console.log('✅ Payment completed:', paymentResponse);
       
-      // Return success response
       return {
         success: true,
         order: {

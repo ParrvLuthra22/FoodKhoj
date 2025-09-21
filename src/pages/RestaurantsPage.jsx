@@ -11,16 +11,14 @@ function RestaurantsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState('all');
   const [sortBy, setSortBy] = useState('rating');
-  const [searchType, setSearchType] = useState('all'); // 'all', 'restaurants', 'food'
+  const [searchType, setSearchType] = useState('all'); 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Load data from shared mock data
   useEffect(() => {
     setRestaurants(mockRestaurants);
     setMenuItems(mockMenuItems);
   }, []);
 
-  // Handle search parameter from navbar (kept for deep-link support, but no UI)
   useEffect(() => {
     const searchFromParams = searchParams.get('search');
     if (searchFromParams) {
@@ -67,7 +65,6 @@ function RestaurantsPage() {
     .sort((a, b) => {
       switch (sortBy) {
         case 'rating':
-          // For menu items, we'll use restaurant rating as proxy
           const restaurantA = restaurants.find(r => r.id === a.restaurantId);
           const restaurantB = restaurants.find(r => r.id === b.restaurantId);
           return (restaurantB?.rating || 0) - (restaurantA?.rating || 0);
@@ -88,7 +85,6 @@ function RestaurantsPage() {
       }
     });
 
-  // Get unique restaurants from filtered menu items
   const restaurantsFromMenuItems = filteredMenuItems.reduce((acc, item) => {
     const restaurant = restaurants.find(r => r.id === item.restaurantId);
     if (restaurant && !acc.find(r => r.id === restaurant.id)) {
@@ -97,14 +93,12 @@ function RestaurantsPage() {
     return acc;
   }, []);
 
-  // Combine results based on search type
   const getDisplayResults = () => {
     if (searchType === 'restaurants') {
       return { restaurants: filteredRestaurants, menuItems: [] };
     } else if (searchType === 'food') {
       return { restaurants: [], menuItems: filteredMenuItems };
     } else {
-      // 'all' - show both restaurants and food items
       const allRestaurants = [...filteredRestaurants, ...restaurantsFromMenuItems];
       const uniqueRestaurants = allRestaurants.filter((restaurant, index, self) => 
         index === self.findIndex(r => r.id === restaurant.id)
