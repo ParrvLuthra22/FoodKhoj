@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Navigation, Clock, Truck } from 'lucide-react';
 
-function MapComponent() {
+function MapComponent({ isActive = false, orderData = null }) {
   const [deliveryProgress, setDeliveryProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -13,6 +13,12 @@ function MapComponent() {
   ];
 
   useEffect(() => {
+    if (!isActive) {
+      setDeliveryProgress(0);
+      setCurrentStep(0);
+      return;
+    }
+
     const interval = setInterval(() => {
       setDeliveryProgress(prev => {
         const newProgress = prev + 2;
@@ -25,7 +31,7 @@ function MapComponent() {
     }, 200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isActive]);
 
   useEffect(() => {
     if (deliveryProgress < 25) setCurrentStep(0);
@@ -44,7 +50,9 @@ function MapComponent() {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Live Delivery Tracking</h3>
-              <p className="text-sm text-gray-600">Order #12345 • Mike Johnson</p>
+              <p className="text-sm text-gray-600">
+                Order #{orderData?.id || '12345'} • {orderData?.driver?.name || 'Mike Johnson'}
+              </p>
             </div>
           </div>
           <div className="text-right">
@@ -89,7 +97,7 @@ function MapComponent() {
             <MapPin className="h-4 w-4 text-white" />
           </div>
           <div className="bg-white rounded px-2 py-1 text-xs font-medium shadow-md mt-1 whitespace-nowrap">
-            Bella Italia
+            {orderData?.restaurant?.name || 'Bella Italia'}
           </div>
         </div>
 
@@ -104,7 +112,7 @@ function MapComponent() {
             <Truck className="h-4 w-4 text-white" />
           </div>
           <div className="bg-white rounded px-2 py-1 text-xs font-medium shadow-md mt-1 whitespace-nowrap">
-            Mike's Delivery
+            {orderData?.driver?.name || 'Mike'}'s Delivery
           </div>
         </div>
 
@@ -113,7 +121,10 @@ function MapComponent() {
             <MapPin className="h-4 w-4 text-white" />
           </div>
           <div className="bg-white rounded px-2 py-1 text-xs font-medium shadow-md mt-1 whitespace-nowrap">
-            Your Location
+            {orderData?.deliveryAddress ? 
+              `${orderData.deliveryAddress.street.slice(0, 15)}...` : 
+              'Your Location'
+            }
           </div>
         </div>
 

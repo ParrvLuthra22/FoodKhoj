@@ -15,6 +15,7 @@ import TrackingPage from './pages/TrackingPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from './components/layout/Layout';
 import ProfilePage from './pages/ProfilePage';
+import RazorpayTest from './components/RazorpayTest';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route path="orders" element={<OrdersPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="track" element={<TrackingPage />} />
+              <Route path="test-razorpay" element={<RazorpayTest />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>

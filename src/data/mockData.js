@@ -477,3 +477,4 @@ export const getRestaurantById = (id) => {
 export const getMenuItemsByRestaurantId = (restaurantId) => {
   return mockMenuItems.filter(item => item.restaurantId === restaurantId);
 };
+
