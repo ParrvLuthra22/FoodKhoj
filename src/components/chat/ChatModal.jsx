@@ -17,7 +17,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
   const simulateDriverResponse = async (userMessage) => {
     setIsTyping(true);
     try {
-      // Brief typing delay for realism
       await new Promise(resolve => setTimeout(resolve, 500));
       const responseText = await generateDriverReply({
         userMessage,
@@ -95,7 +94,6 @@ function ChatModal({ isOpen, onClose, orderId, driverInfo }) {
       localStorage.setItem(`chat_${chatId}`, JSON.stringify(updatedMessages));
       
       setNewMessage('');
-      // Trigger AI reply
       simulateDriverResponse(newMessage.trim());
       
     } catch (error) {

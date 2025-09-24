@@ -121,7 +121,7 @@ function TrackingPreview() {
                 onClick={createDemoOrder}
                 className="btn btn-secondary w-full mt-2 text-sm"
               >
-                📄 Create Demo Order (for testing)
+                Create Demo Order (for testing)
               </button>
             </form>
 

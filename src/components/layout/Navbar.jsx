@@ -45,6 +45,10 @@ function Navbar() {
     setShowUserMenu(false);
   }, [location]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   const handleAuthClick = (mode) => {
     setAuthMode(mode);
     setShowAuthModal(true);
