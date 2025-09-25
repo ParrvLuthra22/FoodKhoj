@@ -86,7 +86,7 @@ const getRandomDriver = () => {
     {
       id: 'driver1',
       name: 'Parrv Luthra',
-      phone: '+91 97283 23123',
+      phone: '+91 96257 89901',
       vehicle: 'Porsche 911 Carrera',
       rating: 5,
       photo: 'https://i.pinimg.com/736x/dd/0d/6d/dd0d6daa93c225efef46ce930602aeee.jpg'
@@ -94,7 +94,7 @@ const getRandomDriver = () => {
     {
       id: 'driver2',
       name: 'Aayrish Singh',
-      phone: '+91 93234 23123',
+      phone: '+91 96257 89901',
       vehicle: 'Ferrari 250 GTO',
       rating: 4.9,
       photo: 'https://i.pinimg.com/736x/3e/78/bb/3e78bba322c95083af166170c4ccce77.jpg'
@@ -102,7 +102,7 @@ const getRandomDriver = () => {
     {
       id: 'driver3',
       name: 'Aayushman Sharma',
-      phone: '+91 96437 09323',
+      phone: '+91 96257 89901',
       vehicle: 'Ford Focus - DEF 456',
       rating: 4.7,
       photo: 'https://i.pinimg.com/736x/d5/4e/75/d54e75a4a88d9769f330382f57ca2176.jpg'

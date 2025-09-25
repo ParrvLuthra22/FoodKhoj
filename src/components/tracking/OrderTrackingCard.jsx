@@ -11,7 +11,7 @@ function OrderTrackingCard({ order }) {
 
   const driverInfo = {
     name: 'Parrv Luthra',
-    phone: '+91 97283 23123',
+    phone: '+91 96257 89901',
     eta: '15-20 min',
     vehicle: 'Porsche 911 Carrera',
     rating: 5

@@ -93,7 +93,7 @@ function CheckoutPage() {
         estimatedDelivery: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
         driver: {
           name: 'Parrv Luthra',
-          phone: '+91 97283 23123',
+          phone: '+91 96257 89901',
           vehicle: 'Porsche 911 Carrera',
           rating: 5
         }
@@ -542,10 +542,6 @@ function CheckoutPage() {
         paymentData={paymentData}
         orderData={orderData}
         onTrackOrder={handlePaymentSuccess}
-        onDownloadReceipt={() => {
-          // Simple alert for now
-          alert('Receipt download feature - this would generate a receipt');
-        }}
       />
       
       <PaymentError 
